@@ -1,6 +1,6 @@
 {
   "name": "binger",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "The #1 convenience item delivery service on the market!",
   "main": "index.js",
   "scripts": {
