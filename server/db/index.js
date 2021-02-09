@@ -30,8 +30,10 @@ const syncAndSeed =  async()=> {
   const products = await Promise.all([
     Product.create({name: 'milk', price: 4, category: 'diary', quantity: 10, descripton: 'milk'})
   ])
+
   const [cody, murphy] = users;
   const [milk] = products;
+  
   return {
     users: {
       cody,
