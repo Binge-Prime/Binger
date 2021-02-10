@@ -14,8 +14,8 @@ class AllProducts extends Component {
         this.props.removeProduct(e.target.value);
     }
     render () {
-        const { products } = this.props;
-        //console.log(this.props);
+        const { products, isLoggedIn } = this.props;
+        console.log(this.props);
         return (
             <div>
                 <ul id='all-products-list'>
@@ -30,18 +30,21 @@ class AllProducts extends Component {
                                         {/* <li> { product.avgRating } </li> */}
                                     </ul>
 
-                                    <div id='product-tile-buttons'>
-                                        {/* for now, these buttons are rendered for all users, but should only be available to admins; Need for "admin view" of AllProducts to be discussed */}
-                                        <Link to={`/products/update/${product.id}`}>
-                                            <button type='button' className='button-access'>Edit</button>
-                                        </Link>
-                
-                                        <button type='button' className='button-delete' value={product.id} onClick={(e) => this.handleDestroy(e)}>Delete</button>
-                                    </div>
+                                    { isLoggedIn ? (
+                                        <div id='product-tile-buttons'>
+                                            {/* for now, these buttons are rendered for all logged in users, but should only be available to admins; Need for "admin view" of AllProducts to be discussed */}
+
+                                            <Link to={`/products/update/${product.id}`}>
+                                                <button type='button' className='button-access'>Edit</button>
+                                            </Link>
+                    
+                                            <button type='button' className='button-delete' value={product.id} onClick={(e) => this.handleDestroy(e)}>Delete</button>
+                                        </div>
+                                    ) : ( <br/> )
+                                    }
                                 </li>
                             )
-                        })
-                        : 'There are no products to display'
+                        }) : ('There are no products to display')
                     }
                 </ul>
             </div>
@@ -51,7 +54,8 @@ class AllProducts extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        products: state.products.products
+        products: state.products.products,
+        isLoggedIn: !!state.auth.id
     };
 };
 

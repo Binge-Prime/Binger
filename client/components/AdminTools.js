@@ -5,16 +5,17 @@ import { connect } from 'react-redux'
 const AdminTools = ({ isLoggedIn }) => (
     <div>
         <h2>Admin Tools</h2>
-        { isLoggedIn ? // needs to check for Admin role //
+        { isLoggedIn ? // needs to check for Admin role, nt just logged in user //
             (
                 <div id='adminLinks'>
-                    <Link to='/adminAllProducts'>Edit Products</Link>
+                    <Link to='/adminAllProducts'>Edit Products (N/a)</Link>
                     <Link to='/products/create'>Create Product</Link>
-                    <Link to='/adminAllUsers'>Edit Users</Link>
-                    <Link to='/users/create'>Create User</Link>
+                    <Link to='/adminAllUsers'>Edit Users (N/a)</Link>
+                    <Link to='/users/create'>Create User (N/a)</Link>
                 </div>
-            ) : (<p>Access Not Authorized</p>)
-            }
+            ) : (
+                <p>Access Not Authorized</p>)
+        }
     </div>
 )
 

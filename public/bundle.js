@@ -2165,18 +2165,18 @@ const AdminTools = ({
   isLoggedIn
 }) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Admin Tools"), isLoggedIn ?
 /*#__PURE__*/
-// needs to check for Admin role //
+// needs to check for Admin role, nt just logged in user //
 react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
   id: "adminLinks"
 }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
   to: "/adminAllProducts"
-}, "Edit Products"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
+}, "Edit Products (N/a)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
   to: "/products/create"
 }, "Create Product"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
   to: "/adminAllUsers"
-}, "Edit Users"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
+}, "Edit Users (N/a)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
   to: "/users/create"
-}, "Create User")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Access Not Authorized"));
+}, "Create User (N/a)")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Access Not Authorized"));
 
 const mapState = state => {
   return {
@@ -2221,9 +2221,10 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
 
   render() {
     const {
-      products
-    } = this.props; //console.log(this.props);
-
+      products,
+      isLoggedIn
+    } = this.props;
+    console.log(this.props);
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
       id: "all-products-list"
     }, products.length !== 0 ? products.map(product => {
@@ -2232,7 +2233,7 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
         key: product.id
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
         id: "product-tile-info"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.name, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " $", product.price, " ")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.name, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " $", product.price, " ")), isLoggedIn ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "product-tile-buttons"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
         to: `/products/update/${product.id}`
@@ -2244,7 +2245,7 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
         className: "button-delete",
         value: product.id,
         onClick: e => this.handleDestroy(e)
-      }, "Delete")));
+      }, "Delete")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null));
     }) : 'There are no products to display'));
   }
 
@@ -2252,7 +2253,8 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
 
 const mapStateToProps = state => {
   return {
-    products: state.products.products
+    products: state.products.products,
+    isLoggedIn: !!state.auth.id
   };
 };
 
