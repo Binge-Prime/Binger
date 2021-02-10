@@ -97,8 +97,8 @@ class productForm extends Component {
 const mapStateToProps = ({ products }, ownProps) => {
     return {
         product: products.products.find(product => product.id === ownProps.match.params.id * 1) || {}
-    }
-}
+    };
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {

@@ -15,12 +15,12 @@ class AllProducts extends Component {
     }
     render () {
         const { products } = this.props;
-        console.log(this.props);
+        //console.log(this.props);
         return (
             <div>
                 <ul id='all-products-list'>
                     {
-                        products.map((product) => {
+                        products.length !==0 ? products.map((product) => {
                             return (
                                 <li id='product-tile-body' key={ product.id }>
                                     <ul id='product-tile-info'>
@@ -39,6 +39,7 @@ class AllProducts extends Component {
                                 </li>
                             )
                         })
+                        : 'There are no products to display'
                     }
                 </ul>
             </div>
@@ -46,7 +47,12 @@ class AllProducts extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({ products: state.products.products });
+const mapStateToProps = (state) => {
+    console.log(state);
+    return {
+        products: state.products.products
+    };
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {

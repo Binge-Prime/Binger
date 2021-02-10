@@ -2040,11 +2040,11 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
   render() {
     const {
       products
-    } = this.props;
-    console.log(this.props);
+    } = this.props; //console.log(this.props);
+
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
       id: "all-products-list"
-    }, products.map(product => {
+    }, products.length !== 0 ? products.map(product => {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
         id: "product-tile-body",
         key: product.id
@@ -2063,14 +2063,17 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
         value: product.id,
         onClick: e => this.handleDestroy(e)
       }, "Delete")));
-    })));
+    }) : 'There are no products to display'));
   }
 
 }
 
-const mapStateToProps = state => ({
-  products: state.products.products
-});
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    products: state.products.products
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -2695,10 +2698,14 @@ function productReducer(state = initialState, action) {
       };
 
     case UPDATE_PRODUCT:
-      return state.products.map(product => product.id === action.product.id ? action.product : product);
+      return { ...state,
+        products: state.products.map(product => product.id === action.product.id ? action.product : product)
+      };
 
     case DELETE_PRODUCT:
-      return state.products.filter(product => product.id !== action.product.id);
+      return { ...state,
+        products: state.products.filter(product => product.id !== action.product.id)
+      };
 
     default:
       return state;

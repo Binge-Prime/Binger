@@ -66,9 +66,9 @@ export default function productReducer (state=initialState, action) {
         case CREATE_PRODUCT:
             return { ...state, products: [...state.products, action.product] }
         case UPDATE_PRODUCT:
-            return state.products.map(product => product.id === action.product.id ? action.product : product)
+            return { ...state, products: state.products.map(product => product.id === action.product.id ? action.product : product) }
         case DELETE_PRODUCT:
-            return state.products.filter(product => product.id !== action.product.id )
+            return { ...state, products: state.products.filter(product => product.id !== action.product.id) }
         default:
             return state
     }
