@@ -22,6 +22,48 @@ form div {
   display: inline-block;
 }
 
+.thumbnail {
+  border-radius: 4px;
+  padding: 5px;
+  width: 200px;
+  margin-bottom: 1em;
+}
+
+/* ALL PRODUCTS PAGE */
+
+#all-products-list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+#all-products-list li {
+  list-style-type: none;
+}
+
+#product-tile-body {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-content: center;
+  width: 15em;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 1em;
+  padding: 0.5em;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+#product-tile-info {
+  padding: 0;
+}
+
+#product-tile-buttons button{
+  margin-top: 0.5em;
+  width: 50%
+}
+
 /* ADMIN TOOLS */
 
 #adminLinks {
@@ -31,10 +73,11 @@ form div {
 }
 
 #adminLinks a {
-  padding: 1rem;
-  margin: 0.5rem;
+  padding: 1em;
+  margin: 0.5em;
   border: 1px solid black;
   border-radius: 10px;
   width: 30%;
   text-align: center;
 }
+

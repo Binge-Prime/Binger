@@ -24,9 +24,10 @@ class AllProducts extends Component {
                             return (
                                 <li id='product-tile-body' key={ product.id }>
                                     {/* need to wrap the product tile in a <Link> to redirect to SingleProduct page on click*/}
+                                    <img className='thumbnail' src={product.ImgUrl}/>
                                     <ul id='product-tile-info'>
-                                        <li> { product.name } </li>
-                                        <li> ${ product.price } </li>
+                                        <li>{ product.name }</li>
+                                        <li>${ product.price }</li>
                                         {/* <li> { product.avgRating } </li> */}
                                     </ul>
 
@@ -40,7 +41,7 @@ class AllProducts extends Component {
                     
                                             <button type='button' className='button-delete' value={product.id} onClick={(e) => this.handleDestroy(e)}>Delete</button>
                                         </div>
-                                    ) : ( <br/> )
+                                    ) : (<br/>)
                                     }
                                 </li>
                             )
