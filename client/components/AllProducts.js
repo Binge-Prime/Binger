@@ -22,8 +22,11 @@ class AllProducts extends Component {
                                         <li> ${ product.price } </li>
                                         {/* <li> { product.avgRating } </li> */}
                                     </ul>
-                                    <button>Edit</button>
-                                    <button>Delete</button>
+
+                                    <div id='product-list-buttons'>
+                                        <button>Edit</button>
+                                        <button>Delete</button>
+                                    </div>
                                 </li>
                             )
                         })

@@ -14,6 +14,7 @@ class productForm extends Component {
             ImgUrl: product.id ? product.ImgUrl : '',
         }
         this.onChange = this.onChange.bind(this);
+        this.handleDestroy = this.handleDestroy.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     componentDidMount() {
@@ -36,6 +37,10 @@ class productForm extends Component {
             [e.target.name]: e.target.value
         })
     }
+    handleDestroy() {
+        const { product } = this.props;
+        this.props.deleteProduct(product.id);
+    }
     handleSubmit(e) {
         e.preventDefault();
         const { product } = this.props;
@@ -46,17 +51,52 @@ class productForm extends Component {
         }
     }
     render() {
-        const { name, category, quantity, price, description } = this.state;
+        const { name, category, quantity, price, description, ImgUrl } = this.state;
         const { product } = this.props;
         return (
-            null
+            <div id='productForm-shell'>
+                <h2>
+                    { product.id ?
+                        `Edit ${product.name}` : 'Add New Product'
+                    }
+                </h2>
+                
+                <form id='productForm-body' onSubmit={(e) => this.handleSubmit(e)}>
+                    <label for='name'>Name: </label>
+                    <input type='text' name='name' onChange={(e) => this.onChange(e)} value={name} />
+                    
+                    <label for='category'>Category: </label>
+                    <input type='text' name='category' onChange={(e) => this.onChange(e)} value={category} />
+
+                    <label for='quantity'>Quantity: </label>
+                    <input type='number' name='quantity' onChange={(e) => this.onChange(e)} value={quantity} />
+
+                    <label for='price'>Price: </label>
+                    <input type='number' name='price' onChange={(e) => this.onChange(e)} value={price} />
+
+                    <label for='description'>Decription: </label>
+                    <textarea className='input-description' name='description' onChange={(e) => this.onChange(e)} value={description} />
+
+                    <label for='ImgUrl'>Image URL: </label>
+                    <input type='url' name='ImgUrl' onChange={(e) => this.onChange(e)} value={ImgUrl} />
+
+                    <div id='productForm-buttons'>
+                        <input type='reset'></input>
+                        <button type='submit' className='button-edit'>{product.id ? `Update` : `Create` `${name}`}</button>
+                    </div>
+                </form>
+
+                { !!product.id &&
+                    <button type='button' className='button-delete' onClick={() => this.handleDestroy()}>{`Delete ${product.name}`}</button>
+                }
+            </div>
         );
     }
 }
 
-const mapStateToProps = ({ products }) => {
+const mapStateToProps = ({ products }, ownProps) => {
     return {
-        products: products.products
+        product: products.products.find(product => product.id === ownProps.match.params.id * 1) || {}
     }
 }
 
