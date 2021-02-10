@@ -1961,6 +1961,188 @@ const App = () => {
 
 /***/ }),
 
+/***/ "./client/components/Admin/productForm.js":
+/*!************************************************!*\
+  !*** ./client/components/Admin/productForm.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _store_products__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../store/products */ "./client/store/products.js");
+
+
+
+
+class productForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+  constructor({
+    product
+  }) {
+    super();
+    this.state = {
+      name: product.id ? product.name : '',
+      category: product.id ? product.category : '',
+      quantity: product.id ? product.quantity : 0,
+      price: product.id ? product.price : 0,
+      description: product.id ? product.description : '',
+      ImgUrl: product.id ? product.ImgUrl : ''
+    };
+    this.onChange = this.onChange.bind(this);
+    this.handleDestroy = this.handleDestroy.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {// left here to console.log things, any other future uses, etc
+  } // Not sure if we need this, but leaving here for now
+  // componentDidUpdate(prevProps) {
+  //     if (prevProps.product.id !== this.props.product.id) {
+  //         this.setState({
+  //             name: this.props.product.name,
+  //             category: this.props.product.category,
+  //             quantity: this.props.product.quantity,
+  //             price: this.props.product.price,
+  //             description: this.props.product.description,
+  //             ImgUrl: this.props.product.ImgUrl,
+  //         });
+  //     }
+  // }
+
+
+  onChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  handleDestroy() {
+    const {
+      product,
+      history
+    } = this.props;
+    this.props.removeProduct(product.id);
+    history.push('/products');
+  }
+
+  handleSubmit(e) {
+    // need to add error message that all fields need to be filled out before submitting (i.e. should not be bale to submit incomplete form)
+    // also product name, needs to be unique (can't add multiples of same products)
+    e.preventDefault();
+    const {
+      product,
+      history
+    } = this.props;
+
+    if (product.id) {
+      this.props.editProduct({ ...this.state,
+        id: product.id
+      });
+      history.push('/products');
+    } else {
+      this.props.addProduct({ ...this.state
+      });
+      history.push('/products');
+    }
+  }
+
+  render() {
+    const {
+      name,
+      category,
+      quantity,
+      price,
+      description,
+      ImgUrl
+    } = this.state;
+    const {
+      product
+    } = this.props;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      id: "productForm-shell"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, product.id ? `Edit ${product.name}` : 'Add New Product'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
+      id: "productForm-body",
+      onSubmit: e => this.handleSubmit(e)
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+      htmlFor: "name"
+    }, "Name: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      type: "text",
+      name: "name",
+      onChange: e => this.onChange(e),
+      value: name
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+      htmlFor: "category"
+    }, "Category: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      type: "text",
+      name: "category",
+      onChange: e => this.onChange(e),
+      value: category
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+      htmlFor: "quantity"
+    }, "Quantity: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      type: "number",
+      name: "quantity",
+      onChange: e => this.onChange(e),
+      value: quantity
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+      htmlFor: "price"
+    }, "Price: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      type: "number",
+      name: "price",
+      onChange: e => this.onChange(e),
+      value: price
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+      htmlFor: "description"
+    }, "Decription: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("textarea", {
+      className: "input-description",
+      name: "description",
+      onChange: e => this.onChange(e),
+      value: description
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+      htmlFor: "ImgUrl"
+    }, "Image URL: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      type: "text",
+      name: "ImgUrl",
+      onChange: e => this.onChange(e),
+      value: ImgUrl
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      id: "productForm-buttons"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+      type: "submit",
+      className: "button-submit"
+    }, product.id ? 'Update ' : 'Create ', name))), !!product.id && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+      type: "button",
+      className: "button-delete",
+      onClick: () => this.handleDestroy()
+    }, `Delete ${product.name}`));
+  }
+
+}
+
+const mapStateToProps = ({
+  products
+}, ownProps) => {
+  // Q: should we rename products (above) to productsReducer or something? Might be a little confusing otherwise 
+  return {
+    product: products.products.find(product => product.id === ownProps.match.params.id * 1) || {}
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addProduct: product => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.createProduct)(product)),
+    editProduct: product => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.updateProduct)(product)),
+    removeProduct: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.deleteProduct)(id))
+  };
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, mapDispatchToProps)(productForm));
+
+/***/ }),
+
 /***/ "./client/components/AdminTools.js":
 /*!*****************************************!*\
   !*** ./client/components/AdminTools.js ***!
@@ -1989,11 +2171,11 @@ react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
 }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
   to: "/adminAllProducts"
 }, "Edit Products"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
-  to: "/product/create"
+  to: "/products/create"
 }, "Create Product"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
   to: "/adminAllUsers"
 }, "Edit Users"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
-  to: "/user/create"
+  to: "/users/create"
 }, "Create User")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Access Not Authorized"));
 
 const mapState = state => {
@@ -2069,7 +2251,6 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     products: state.products.products
   };
@@ -2231,18 +2412,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Login": () => (/* reexport safe */ _AuthForm__WEBPACK_IMPORTED_MODULE_2__.Login),
 /* harmony export */   "Signup": () => (/* reexport safe */ _AuthForm__WEBPACK_IMPORTED_MODULE_2__.Signup),
 /* harmony export */   "AdminTools": () => (/* reexport safe */ _AdminTools__WEBPACK_IMPORTED_MODULE_3__.default),
-/* harmony export */   "AllProducts": () => (/* reexport safe */ _AllProducts__WEBPACK_IMPORTED_MODULE_4__.default)
+/* harmony export */   "AllProducts": () => (/* reexport safe */ _AllProducts__WEBPACK_IMPORTED_MODULE_4__.default),
+/* harmony export */   "productForm": () => (/* reexport safe */ _components_Admin_productForm__WEBPACK_IMPORTED_MODULE_5__.default)
 /* harmony export */ });
 /* harmony import */ var _navbar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./navbar */ "./client/components/navbar.js");
 /* harmony import */ var _home__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home */ "./client/components/home.js");
 /* harmony import */ var _AuthForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AuthForm */ "./client/components/AuthForm.js");
 /* harmony import */ var _AdminTools__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AdminTools */ "./client/components/AdminTools.js");
 /* harmony import */ var _AllProducts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./AllProducts */ "./client/components/AllProducts.js");
+/* harmony import */ var _components_Admin_productForm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Admin/productForm */ "./client/components/Admin/productForm.js");
 /**
  * `components/index.js` exists simply as a 'central export' for our components.
  * This way, we can import all of our components from the same place, rather than
  * having to figure out which file they belong to!
  */
+
 
 
 
@@ -2280,9 +2464,9 @@ const Navbar = ({
   to: "/products"
 }, "Products"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
   to: "/"
-}, "Cart"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+}, "Cart (n/a)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
   to: "/"
-}, "Account"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+}, "Account (n/a)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
   to: "/admin"
 }, "Admin Tools"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
   href: "#",
@@ -2405,11 +2589,19 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       path: "/home",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.Home
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
+      exact: true,
+      path: "/admin",
+      component: _components__WEBPACK_IMPORTED_MODULE_2__.AdminTools
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
+      exact: true,
       path: "/products",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.AllProducts
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
-      path: "/admin",
-      component: _components__WEBPACK_IMPORTED_MODULE_2__.AdminTools
+      path: "/products/create",
+      component: _components__WEBPACK_IMPORTED_MODULE_2__.productForm
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
+      path: "/products/update/:id",
+      component: _components__WEBPACK_IMPORTED_MODULE_2__.productForm
     })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/login",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.Login

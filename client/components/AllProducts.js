@@ -23,6 +23,7 @@ class AllProducts extends Component {
                         products.length !==0 ? products.map((product) => {
                             return (
                                 <li id='product-tile-body' key={ product.id }>
+                                    {/* need to wrap the product tile in a <Link> to redirect to SingleProduct page on click*/}
                                     <ul id='product-tile-info'>
                                         <li> { product.name } </li>
                                         <li> ${ product.price } </li>
@@ -30,10 +31,11 @@ class AllProducts extends Component {
                                     </ul>
 
                                     <div id='product-tile-buttons'>
+                                        {/* for now, these buttons are rendered for all users, but should only be available to admins; Need for "admin view" of AllProducts to be discussed */}
                                         <Link to={`/products/update/${product.id}`}>
                                             <button type='button' className='button-access'>Edit</button>
                                         </Link>
-                                        
+                
                                         <button type='button' className='button-delete' value={product.id} onClick={(e) => this.handleDestroy(e)}>Delete</button>
                                     </div>
                                 </li>
@@ -48,7 +50,6 @@ class AllProducts extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         products: state.products.products
     };

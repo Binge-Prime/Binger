@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchProduct, createProduct, updateProduct, deleteProduct } from '../store/products';
+import { fetchProduct, createProduct, updateProduct, deleteProduct } from '../../store/products';
 
 class productForm extends Component {
     constructor({ product }) {
@@ -18,36 +18,42 @@ class productForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     componentDidMount() {
-        this.props.init('product id');
+        // left here to console.log things, any other future uses, etc
     }
-    componentDidUpdate() {
-        if (prevProps.product.id !== this.props.product.id) {
-            this.setState({
-                name: this.props.product.name,
-                category: this.props.product.category,
-                quantity: this.props.product.quantity,
-                price: this.props.product.price,
-                description: this.props.product.description,
-                ImgUrl: this.props.product.ImgUrl,
-            });
-        }
-    }
+    // Not sure if we need this, but leaving here for now
+    // componentDidUpdate(prevProps) {
+    //     if (prevProps.product.id !== this.props.product.id) {
+    //         this.setState({
+    //             name: this.props.product.name,
+    //             category: this.props.product.category,
+    //             quantity: this.props.product.quantity,
+    //             price: this.props.product.price,
+    //             description: this.props.product.description,
+    //             ImgUrl: this.props.product.ImgUrl,
+    //         });
+    //     }
+    // }
     onChange(e) {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
     handleDestroy() {
-        const { product } = this.props;
+        const { product, history } = this.props;
         this.props.removeProduct(product.id);
+        history.push('/products');
     }
     handleSubmit(e) {
+        // need to add error message that all fields need to be filled out before submitting (i.e. should not be bale to submit incomplete form)
+        // also product name, needs to be unique (can't add multiples of same products)
         e.preventDefault();
-        const { product } = this.props;
+        const { product, history } = this.props;
         if (product.id) {
             this.props.editProduct({ ...this.state, id: product.id });
+            history.push('/products');
         } else {
             this.props.addProduct({ ...this.state });
+            history.push('/products')
         }
     }
     render() {
@@ -62,27 +68,27 @@ class productForm extends Component {
                 </h2>
                 
                 <form id='productForm-body' onSubmit={(e) => this.handleSubmit(e)}>
-                    <label for='name'>Name: </label>
+                    <label htmlFor='name'>Name: </label>
                     <input type='text' name='name' onChange={(e) => this.onChange(e)} value={name} />
                     
-                    <label for='category'>Category: </label>
+                    <label htmlFor='category'>Category: </label>
                     <input type='text' name='category' onChange={(e) => this.onChange(e)} value={category} />
 
-                    <label for='quantity'>Quantity: </label>
+                    <label htmlFor='quantity'>Quantity: </label>
                     <input type='number' name='quantity' onChange={(e) => this.onChange(e)} value={quantity} />
 
-                    <label for='price'>Price: </label>
+                    <label htmlFor='price'>Price: </label>
                     <input type='number' name='price' onChange={(e) => this.onChange(e)} value={price} />
 
-                    <label for='description'>Decription: </label>
+                    <label htmlFor='description'>Decription: </label>
                     <textarea className='input-description' name='description' onChange={(e) => this.onChange(e)} value={description} />
 
-                    <label for='ImgUrl'>Image URL: </label>
-                    <input type='url' name='ImgUrl' onChange={(e) => this.onChange(e)} value={ImgUrl} />
+                    <label htmlFor='ImgUrl'>Image URL: </label>
+                    <input type='text' name='ImgUrl' onChange={(e) => this.onChange(e)} value={ImgUrl} />
 
                     <div id='productForm-buttons'>
-                        <input type='reset'></input>
-                        <button type='submit' className='button-submit'>{product.id ? `Update` : `Create` `${name}`}</button>
+                        {/* <input type='reset'></input> // Q: Do we want to add a reset button that returns the form to prevProps? Alternatively, we can render 2 forms, one with current data (not editable), and one with new data */}
+                        <button type='submit' className='button-submit'>{ product.id ? 'Update ' : 'Create ' }{name}</button>
                     </div>
                 </form>
 
@@ -95,6 +101,7 @@ class productForm extends Component {
 }
 
 const mapStateToProps = ({ products }, ownProps) => {
+    // Q: should we rename products (above) to productsReducer or something? Might be a little confusing otherwise 
     return {
         product: products.products.find(product => product.id === ownProps.match.params.id * 1) || {}
     };
@@ -102,7 +109,6 @@ const mapStateToProps = ({ products }, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        init: (id) => dispatch(fetchProduct(id)),
         addProduct: (product) => dispatch(createProduct(product)),
         editProduct: (product) => dispatch(updateProduct(product)),
         removeProduct: (id) => dispatch(deleteProduct(id)),

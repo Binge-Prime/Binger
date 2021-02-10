@@ -28,9 +28,9 @@ const syncAndSeed =  async()=> {
   ])
 
   const products = await Promise.all([
-    Product.create({ name: 'milk', price: 4, category: 'diary', quantity: 10, descripton: 'milk' }),
-    Product.create({ name: 'tesla', price: 100, category: 'moon', quantity: 10, descripton: 'tesla' }),
-    Product.create({ name: 'doge', price: 1, category: 'pluto', quantity: 10, descripton: 'doge' })
+    Product.create({ name: 'milk', price: 4, category: 'dairy', quantity: 10, description: 'milk', ImgUrl: 'milk.com'}),
+    Product.create({ name: 'tesla', price: 100, category: 'moon', quantity: 10, description: 'tesla', ImgUrl: 'tesla.com' }),
+    Product.create({ name: 'doge', price: 1, category: 'pluto', quantity: 10, description: 'doge', ImgUrl: 'doge.com' })
   ])
 
   const [cody, murphy] = users;
