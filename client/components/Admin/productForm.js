@@ -89,12 +89,12 @@ class productForm extends Component {
                     <div id='productForm-buttons'>
                         {/* <input type='reset'></input> // Q: Do we want to add a reset button that returns the form to prevProps? Alternatively, we can render 2 forms, one with current data (not editable), and one with new data */}
                         <button type='submit' className='button-submit'>{ product.id ? 'Update ' : 'Create ' }{name}</button>
+
+                        { !!product.id &&
+                            <button type='button' className='button-delete' onClick={() => this.handleDestroy()}>{`Delete ${product.name}`}</button>
+                        }
                     </div>
                 </form>
-
-                { !!product.id &&
-                    <button type='button' className='button-delete' onClick={() => this.handleDestroy()}>{`Delete ${product.name}`}</button>
-                }
             </div>
         );
     }

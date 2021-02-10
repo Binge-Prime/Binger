@@ -2113,11 +2113,11 @@ class productForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
       type: "submit",
       className: "button-submit"
-    }, product.id ? 'Update ' : 'Create ', name))), !!product.id && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+    }, product.id ? 'Update ' : 'Create ', name), !!product.id && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
       type: "button",
       className: "button-delete",
       onClick: () => this.handleDestroy()
-    }, `Delete ${product.name}`));
+    }, `Delete ${product.name}`))));
   }
 
 }
@@ -2224,7 +2224,6 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       products,
       isLoggedIn
     } = this.props;
-    console.log(this.props);
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
       id: "all-products-list"
     }, products.length !== 0 ? products.map(product => {

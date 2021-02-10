@@ -15,7 +15,6 @@ class AllProducts extends Component {
     }
     render () {
         const { products, isLoggedIn } = this.props;
-        console.log(this.props);
         return (
             <div>
                 <ul id='all-products-list'>
@@ -34,7 +33,7 @@ class AllProducts extends Component {
                                     { isLoggedIn ? (
                                         <div id='product-tile-buttons'>
                                             {/* for now, these buttons are rendered for all logged in users, but should only be available to admins; Need for "admin view" of AllProducts to be discussed */}
-
+                                            
                                             <Link to={`/products/update/${product.id}`}>
                                                 <button type='button' className='button-access'>Edit</button>
                                             </Link>
