@@ -9,8 +9,8 @@ const AdminTools = ({ isLoggedIn }) => (
             (
                 <div id='adminLinks'>
                     <Link to="/adminAllProducts">Edit Products</Link>
-                    <Link to="/adminCreateProduct">Create Product</Link>
-                    <Link to='/adminUsers'>Edit Users</Link>
+                    <Link to="/productForm">Create Product</Link>
+                    <Link to='/adminAllUsers'>Edit Users</Link>
                     <Link to="/userForm">Create User</Link>
                 </div>
             ) : (<p>Access Not Authorized</p>)

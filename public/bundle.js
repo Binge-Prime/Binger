@@ -1989,9 +1989,9 @@ react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
 }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
   to: "/adminAllProducts"
 }, "Edit Products"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
-  to: "/adminCreateProduct"
+  to: "/productForm"
 }, "Create Product"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
-  to: "/adminUsers"
+  to: "/adminAllUsers"
 }, "Edit Users"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
   to: "/userForm"
 }, "Create User")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Access Not Authorized"));
@@ -2368,8 +2368,8 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
   render() {
     const {
       isLoggedIn
-    } = this.props;
-    console.log(this.props);
+    } = this.props; //console.log(this.props);
+
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, isLoggedIn ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/home",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.Home
@@ -2567,21 +2567,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "setProducts": () => (/* binding */ setProducts),
 /* harmony export */   "setSelectedProduct": () => (/* binding */ setSelectedProduct),
+/* harmony export */   "_createProduct": () => (/* binding */ _createProduct),
+/* harmony export */   "_updateProduct": () => (/* binding */ _updateProduct),
 /* harmony export */   "fetchProducts": () => (/* binding */ fetchProducts),
 /* harmony export */   "fetchProduct": () => (/* binding */ fetchProduct),
+/* harmony export */   "addProduct": () => (/* binding */ addProduct),
+/* harmony export */   "editProduct": () => (/* binding */ editProduct),
 /* harmony export */   "default": () => (/* binding */ productReducer)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
- // Initial State
+ // INITIAL STATE
 
 const initialState = {
   products: [],
   selectedProduct: {}
-}; // Constants
+}; // CONSTANTS
 
 const SET_PRODUCTS = 'SET_PRODUCTS';
-const SET_SELECTED_PRODUCT = 'SET_SELECTED_PRODUCT'; // Actions
+const SET_SELECTED_PRODUCT = 'SET_SELECTED_PRODUCT';
+const CREATE_PRODUCT = 'CREATE_PRODUCT';
+const UPDATE_PRODUCT = 'UPDATE_PRODUCT'; // ACTIONS (Q: do we need to export these?)
 
 const setProducts = products => ({
   type: SET_PRODUCTS,
@@ -2590,22 +2596,45 @@ const setProducts = products => ({
 const setSelectedProduct = selectedProduct => ({
   type: SET_SELECTED_PRODUCT,
   selectedProduct
-}); // Thunks
-// Fetches all product data
+});
+const _createProduct = product => ({
+  type: CREATE_PRODUCT,
+  product
+});
+const _updateProduct = product => ({
+  type: UPDATE_PRODUCT,
+  product
+}); // THUNKS
+// fetches all product data
 
 const fetchProducts = () => {
   return async dispatch => {
     const products = (await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/products')).data;
     dispatch(setProducts(products));
   };
-}; // Fetches single product data
+}; // fetches single product data
 
 const fetchProduct = id => {
   return async dispatch => {
     const product = (await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/api/products/${id}`)).data;
     dispatch(setSelectedProduct(product));
   };
-};
+}; // add a single new product
+
+const addProduct = product => {
+  return async dispatch => {
+    const newProduct = (await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/api/products/`, product)).data;
+    dispatch(_createProduct(newProduct));
+  };
+}; // edit existing single product
+
+const editProduct = product => {
+  return async dispatch => {
+    const updatedProduct = (await axios__WEBPACK_IMPORTED_MODULE_0___default().put(`/api/products/${product.id}`, product)).data;
+    dispatch(_updateProduct(updatedProduct));
+  };
+}; // REDUCER
+
 function productReducer(state = initialState, action) {
   switch (action.type) {
     case SET_PRODUCTS:
@@ -2617,6 +2646,14 @@ function productReducer(state = initialState, action) {
       return { ...state,
         selectedProduct: action.selectedProduct
       };
+
+    case CREATE_PRODUCT:
+      return { ...state,
+        products: [...state.products, action.product]
+      };
+
+    case UPDATE_PRODUCT:
+      return state.products.map(product => action.product.id === product.id ? action.product : product);
 
     default:
       return state;
