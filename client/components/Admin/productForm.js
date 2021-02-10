@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchProduct, addProduct, editProduct, deletedProduct } from '../store';
+import { fetchProduct, createProduct, updateProduct, deleteProduct } from '../store/products';
 
 class productForm extends Component {
     constructor({ product }) {
@@ -39,15 +39,15 @@ class productForm extends Component {
     }
     handleDestroy() {
         const { product } = this.props;
-        this.props.deleteProduct(product.id);
+        this.props.removeProduct(product.id);
     }
     handleSubmit(e) {
         e.preventDefault();
         const { product } = this.props;
         if (product.id) {
-            this.props.updateProduct({ ...this.state, id: this.props.campus.id });
+            this.props.editProduct({ ...this.state, id: product.id });
         } else {
-            this.props.createProduct({ ...this.state });
+            this.props.addProduct({ ...this.state });
         }
     }
     render() {
@@ -82,7 +82,7 @@ class productForm extends Component {
 
                     <div id='productForm-buttons'>
                         <input type='reset'></input>
-                        <button type='submit' className='button-edit'>{product.id ? `Update` : `Create` `${name}`}</button>
+                        <button type='submit' className='button-submit'>{product.id ? `Update` : `Create` `${name}`}</button>
                     </div>
                 </form>
 
@@ -103,9 +103,9 @@ const mapStateToProps = ({ products }, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         init: (id) => dispatch(fetchProduct(id)),
-        addProduct: (product) => dispatch(addProduct(product)),
-        editProduct: (product) => dispatch(editProduct(product)),
-        deleteProduct: (id) => dispatch(deletedProduct(id)),
+        addProduct: (product) => dispatch(createProduct(product)),
+        editProduct: (product) => dispatch(updateProduct(product)),
+        removeProduct: (id) => dispatch(deleteProduct(id)),
     };
 };
 

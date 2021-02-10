@@ -33,7 +33,7 @@ export const fetchProduct = (id) => {
     }
 }
 // add new single product
-export const addProduct = (product) => {
+export const createProduct = (product) => {
     return async (dispatch) => {
         const newProduct = (await axios.post(`/api/products/create`, product)).data
         dispatch(_createProduct(newProduct))
@@ -41,7 +41,7 @@ export const addProduct = (product) => {
 }
 
 // edit existing single product
-export const editProduct = (product) => {
+export const updateProduct = (product) => {
     return async (dispatch) => {
         const updatedProduct = (await axios.put(`/api/products/update/${ product.id }`, product)).data
         dispatch(_updateProduct(updatedProduct))
@@ -49,9 +49,9 @@ export const editProduct = (product) => {
 }
 
 // delete existing single product
-export const removeProduct = (id) => {
+export const deleteProduct = (id) => {
     return async (dispatch) => {
-        const deletedProduct = (await axios.delete(`/api/products/${ id }`)).data
+        const deletedProduct = (await axios.delete(`/api/products/delete/${ id }`)).data
         dispatch(_deleteProduct(deletedProduct))
     }
 }

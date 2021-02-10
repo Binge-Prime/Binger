@@ -2019,7 +2019,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _store_products__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store/products */ "./client/store/products.js");
+
 
 
 
@@ -2028,16 +2030,39 @@ __webpack_require__.r(__webpack_exports__);
 class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
   componentDidMount() {
     this.props.init();
+    this.handleDestroy = this.handleDestroy.bind(this);
+  }
+
+  handleDestroy(e) {
+    this.props.removeProduct(e.target.value);
   }
 
   render() {
     const {
       products
     } = this.props;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, products.map(product => {
+    console.log(this.props);
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
+      id: "all-products-list"
+    }, products.map(product => {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
+        id: "product-tile-body",
         key: product.id
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.name, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " $", product.price, " ")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", null, "Edit"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", null, "Delete"));
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
+        id: "product-tile-info"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.name, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " $", product.price, " ")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "product-tile-buttons"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+        to: `/products/update/${product.id}`
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+        type: "button",
+        className: "button-access"
+      }, "Edit")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+        type: "button",
+        className: "button-delete",
+        value: product.id,
+        onClick: e => this.handleDestroy(e)
+      }, "Delete")));
     })));
   }
 
@@ -2047,9 +2072,12 @@ const mapStateToProps = state => ({
   products: state.products.products
 });
 
-const mapDispatchToProps = dispatch => ({
-  init: () => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchProducts)())
-});
+const mapDispatchToProps = dispatch => {
+  return {
+    init: () => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchProducts)()),
+    removeProduct: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.deleteProduct)(id))
+  };
+};
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, mapDispatchToProps)(AllProducts));
 
@@ -2572,9 +2600,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "_deleteProduct": () => (/* binding */ _deleteProduct),
 /* harmony export */   "fetchProducts": () => (/* binding */ fetchProducts),
 /* harmony export */   "fetchProduct": () => (/* binding */ fetchProduct),
-/* harmony export */   "addProduct": () => (/* binding */ addProduct),
-/* harmony export */   "editProduct": () => (/* binding */ editProduct),
-/* harmony export */   "removeProduct": () => (/* binding */ removeProduct),
+/* harmony export */   "createProduct": () => (/* binding */ createProduct),
+/* harmony export */   "updateProduct": () => (/* binding */ updateProduct),
+/* harmony export */   "deleteProduct": () => (/* binding */ deleteProduct),
 /* harmony export */   "default": () => (/* binding */ productReducer)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -2628,23 +2656,23 @@ const fetchProduct = id => {
   };
 }; // add new single product
 
-const addProduct = product => {
+const createProduct = product => {
   return async dispatch => {
     const newProduct = (await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/api/products/create`, product)).data;
     dispatch(_createProduct(newProduct));
   };
 }; // edit existing single product
 
-const editProduct = product => {
+const updateProduct = product => {
   return async dispatch => {
     const updatedProduct = (await axios__WEBPACK_IMPORTED_MODULE_0___default().put(`/api/products/update/${product.id}`, product)).data;
     dispatch(_updateProduct(updatedProduct));
   };
 }; // delete existing single product
 
-const removeProduct = id => {
+const deleteProduct = id => {
   return async dispatch => {
-    const deletedProduct = (await axios__WEBPACK_IMPORTED_MODULE_0___default().delete(`/api/products/${id}`)).data;
+    const deletedProduct = (await axios__WEBPACK_IMPORTED_MODULE_0___default().delete(`/api/products/delete/${id}`)).data;
     dispatch(_deleteProduct(deletedProduct));
   };
 }; // REDUCER
