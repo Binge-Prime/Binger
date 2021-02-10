@@ -1989,11 +1989,11 @@ react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
 }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
   to: "/adminAllProducts"
 }, "Edit Products"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
-  to: "/productForm"
+  to: "/product/create"
 }, "Create Product"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
   to: "/adminAllUsers"
 }, "Edit Users"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
-  to: "/userForm"
+  to: "/user/create"
 }, "Create User")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Access Not Authorized"));
 
 const mapState = state => {
@@ -2037,7 +2037,7 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, products.map(product => {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
         key: product.id
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.name, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " $", product.price, " ")));
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.name, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " $", product.price, " ")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", null, "Edit"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", null, "Delete"));
     })));
   }
 
@@ -2569,10 +2569,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "setSelectedProduct": () => (/* binding */ setSelectedProduct),
 /* harmony export */   "_createProduct": () => (/* binding */ _createProduct),
 /* harmony export */   "_updateProduct": () => (/* binding */ _updateProduct),
+/* harmony export */   "_deleteProduct": () => (/* binding */ _deleteProduct),
 /* harmony export */   "fetchProducts": () => (/* binding */ fetchProducts),
 /* harmony export */   "fetchProduct": () => (/* binding */ fetchProduct),
 /* harmony export */   "addProduct": () => (/* binding */ addProduct),
 /* harmony export */   "editProduct": () => (/* binding */ editProduct),
+/* harmony export */   "removeProduct": () => (/* binding */ removeProduct),
 /* harmony export */   "default": () => (/* binding */ productReducer)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -2587,7 +2589,8 @@ const initialState = {
 const SET_PRODUCTS = 'SET_PRODUCTS';
 const SET_SELECTED_PRODUCT = 'SET_SELECTED_PRODUCT';
 const CREATE_PRODUCT = 'CREATE_PRODUCT';
-const UPDATE_PRODUCT = 'UPDATE_PRODUCT'; // ACTIONS (Q: do we need to export these?)
+const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
+const DELETE_PRODUCT = 'DELETE_PRODUCT'; // ACTIONS (Q: do we need to export these?)
 
 const setProducts = products => ({
   type: SET_PRODUCTS,
@@ -2604,6 +2607,10 @@ const _createProduct = product => ({
 const _updateProduct = product => ({
   type: UPDATE_PRODUCT,
   product
+});
+const _deleteProduct = product => ({
+  type: DELETE_PRODUCT,
+  product
 }); // THUNKS
 // fetches all product data
 
@@ -2619,19 +2626,26 @@ const fetchProduct = id => {
     const product = (await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/api/products/${id}`)).data;
     dispatch(setSelectedProduct(product));
   };
-}; // add a single new product
+}; // add new single product
 
 const addProduct = product => {
   return async dispatch => {
-    const newProduct = (await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/api/products/`, product)).data;
+    const newProduct = (await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/api/products/create`, product)).data;
     dispatch(_createProduct(newProduct));
   };
 }; // edit existing single product
 
 const editProduct = product => {
   return async dispatch => {
-    const updatedProduct = (await axios__WEBPACK_IMPORTED_MODULE_0___default().put(`/api/products/${product.id}`, product)).data;
+    const updatedProduct = (await axios__WEBPACK_IMPORTED_MODULE_0___default().put(`/api/products/update/${product.id}`, product)).data;
     dispatch(_updateProduct(updatedProduct));
+  };
+}; // delete existing single product
+
+const removeProduct = id => {
+  return async dispatch => {
+    const deletedProduct = (await axios__WEBPACK_IMPORTED_MODULE_0___default().delete(`/api/products/${id}`)).data;
+    dispatch(_deleteProduct(deletedProduct));
   };
 }; // REDUCER
 
@@ -2653,7 +2667,10 @@ function productReducer(state = initialState, action) {
       };
 
     case UPDATE_PRODUCT:
-      return state.products.map(product => action.product.id === product.id ? action.product : product);
+      return state.products.map(product => product.id === action.product.id ? action.product : product);
+
+    case DELETE_PRODUCT:
+      return state.products.filter(product => product.id !== action.product.id);
 
     default:
       return state;

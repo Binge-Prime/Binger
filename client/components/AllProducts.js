@@ -10,12 +10,11 @@ class AllProducts extends Component {
     }
     render () {
         const { products } = this.props;
-
         return (
             <div>
                 <ul>
                     {
-                        products.map( (product) => {
+                        products.map((product) => {
                             return (
                                 <li key={ product.id }>
                                     <ul>
@@ -23,6 +22,8 @@ class AllProducts extends Component {
                                         <li> ${ product.price } </li>
                                         {/* <li> { product.avgRating } </li> */}
                                     </ul>
+                                    <button>Edit</button>
+                                    <button>Delete</button>
                                 </li>
                             )
                         })

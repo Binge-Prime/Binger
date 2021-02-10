@@ -3,7 +3,7 @@
 const db = require('./db')
 
 const User = require('./models/user');
-const Cart = require('./models/cart');
+// const Cart = require('./models/cart');
 const Orders = require('./models/order');
 const Product = require('./models/product');
 const Reviews = require('./models/review');
@@ -33,7 +33,7 @@ const syncAndSeed =  async()=> {
 
   const [cody, murphy] = users;
   const [milk] = products;
-  
+
   return {
     users: {
       cody,

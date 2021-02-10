@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchProduct, addProduct, editProduct } from '../store';
+import { fetchProduct, addProduct, editProduct, deletedProduct } from '../store';
 
 class productForm extends Component {
     constructor({ product }) {
@@ -54,11 +54,19 @@ class productForm extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({ products: state.products.})
+const mapStateToProps = ({ products }) => {
+    return {
+        products: products.products
+    }
+}
 
-const mapDispatchToProps = (dispatch) => ({
-    init: (id) => dispatch(fetchProduct(id)),
-    cre
-})
+const mapDispatchToProps = (dispatch) => {
+    return {
+        init: (id) => dispatch(fetchProduct(id)),
+        addProduct: (product) => dispatch(addProduct(product)),
+        editProduct: (product) => dispatch(editProduct(product)),
+        deleteProduct: (id) => dispatch(deletedProduct(id)),
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(productForm);

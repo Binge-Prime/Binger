@@ -6,9 +6,11 @@ import auth from './auth'
 import products from './products'
 
 const reducer = combineReducers({ auth, products })
+
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
+
 const store = createStore(reducer, middleware)
 
 export default store
