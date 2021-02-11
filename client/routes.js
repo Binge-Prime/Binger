@@ -14,10 +14,10 @@ class Routes extends Component {
 
   render() {
     const { isLoggedIn } = this.props
-    //console.log(this.props);
-
     return (
       <div>
+        {/* will need to display Home and AllProducts for Guests && add functionality to tell Guests to log in if they try to create an Order */}
+        {/* TBD: may consider adding functionality to check for Admin rights to open up some of the Admin-related routes*/}
         {isLoggedIn ? (
           <Switch>
             <Route path='/home' component={Home} />

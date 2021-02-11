@@ -17,22 +17,6 @@ class productForm extends Component {
         this.handleDestroy = this.handleDestroy.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    componentDidMount() {
-        // left here to console.log things, any other future uses, etc
-    }
-    // Not sure if we need this, but leaving here for now
-    // componentDidUpdate(prevProps) {
-    //     if (prevProps.product.id !== this.props.product.id) {
-    //         this.setState({
-    //             name: this.props.product.name,
-    //             category: this.props.product.category,
-    //             quantity: this.props.product.quantity,
-    //             price: this.props.product.price,
-    //             description: this.props.product.description,
-    //             ImgUrl: this.props.product.ImgUrl,
-    //         });
-    //     }
-    // }
     onChange(e) {
         this.setState({
             [e.target.name]: e.target.value
@@ -101,7 +85,6 @@ class productForm extends Component {
 }
 
 const mapStateToProps = ({ products }, ownProps) => {
-    // Q: should we rename products (above) to productsReducer or something? Might be a little confusing otherwise 
     return {
         product: products.products.find(product => product.id === ownProps.match.params.id * 1) || {}
     };

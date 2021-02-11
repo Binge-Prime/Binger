@@ -1997,22 +1997,6 @@ class productForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount() {// left here to console.log things, any other future uses, etc
-  } // Not sure if we need this, but leaving here for now
-  // componentDidUpdate(prevProps) {
-  //     if (prevProps.product.id !== this.props.product.id) {
-  //         this.setState({
-  //             name: this.props.product.name,
-  //             category: this.props.product.category,
-  //             quantity: this.props.product.quantity,
-  //             price: this.props.product.price,
-  //             description: this.props.product.description,
-  //             ImgUrl: this.props.product.ImgUrl,
-  //         });
-  //     }
-  // }
-
-
   onChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -2125,7 +2109,6 @@ class productForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
 const mapStateToProps = ({
   products
 }, ownProps) => {
-  // Q: should we rename products (above) to productsReducer or something? Might be a little confusing otherwise 
   return {
     product: products.products.find(product => product.id === ownProps.match.params.id * 1) || {}
   };
@@ -2226,7 +2209,7 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     } = this.props;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
       id: "all-products-list"
-    }, products.length !== 0 ? products.map(product => {
+    }, products.map(product => {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
         id: "product-tile-body",
         key: product.id
@@ -2248,7 +2231,7 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
         value: product.id,
         onClick: e => this.handleDestroy(e)
       }, "Delete")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null));
-    }) : 'There are no products to display'));
+    })));
   }
 
 }
@@ -2462,7 +2445,7 @@ __webpack_require__.r(__webpack_exports__);
 const Navbar = ({
   handleClick,
   isLoggedIn
-}) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Bingr"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("nav", null, isLoggedIn ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+}) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Binger"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("nav", null, isLoggedIn ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
   to: "/home"
 }, "Home"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
   to: "/products"
@@ -2587,8 +2570,7 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
   render() {
     const {
       isLoggedIn
-    } = this.props; //console.log(this.props);
-
+    } = this.props;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, isLoggedIn ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/home",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.Home

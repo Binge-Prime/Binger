@@ -56,5 +56,3 @@ router.delete('/delete/:id',async(req,res,next)=>{
       next(error)
   }
 })
-
-// Q: why do we need 'delete' in the route address? 

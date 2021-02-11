@@ -18,15 +18,15 @@ const User = db.define('user', {
   githubId: {
     type: Sequelize.INTEGER
   },
-  // name: {
-  //   type: Sequelize.STRING
-  // },
-  // isAdmin: {
-  //   type: Sequelize.BOOLEAN
-  // },
-  // isAuth:{
-  //   type: Sequelize.BOOLEAN
-  // }
+  name: {
+    type: Sequelize.STRING
+  },
+  isAdmin: {
+    type: Sequelize.BOOLEAN
+  },
+  isAuth:{
+    type: Sequelize.BOOLEAN
+  }
 })
 
 module.exports = User
