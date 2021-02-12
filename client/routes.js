@@ -12,6 +12,7 @@ class Routes extends Component {
     this.props.loadInitialData()
   }
 
+  //home screen should be our all of our products, added redirect to AllProduct component
   render() {
     const { isLoggedIn } = this.props
     return (
@@ -32,6 +33,7 @@ class Routes extends Component {
             <Route path='/signup' component={Signup} />
             <Route path='/home' component={Home} />
             <Route path='/products' component={AllProducts} />
+            <Redirect to="/products" />
           </Switch>
         )}
       </div>

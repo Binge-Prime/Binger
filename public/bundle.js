@@ -2565,7 +2565,8 @@ __webpack_require__.r(__webpack_exports__);
 class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
   componentDidMount() {
     this.props.loadInitialData();
-  }
+  } //home screen should be our all of our products, added redirect to AllProduct component
+
 
   render() {
     const {
@@ -2600,6 +2601,8 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/products",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.AllProducts
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Redirect, {
+      to: "/products"
     })));
   }
 
