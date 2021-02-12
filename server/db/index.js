@@ -22,10 +22,9 @@ const syncAndSeed =  async()=> {
   await db.sync({force: true})
   const users = await Promise.all([
     User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
-    
+    User.create({ email: 'murphy@email.com', password: '123' })
   ])
-
+  
   const products = await Promise.all([
     Product.create({name: 'Strawberries, 1 lb', price: 4.99, category: 'Fresh Produce', quantity: 10, descripton: 'While this berry\'s colorful cousins—the blueberry and red raspberry—are grown on bushes, this bright red fruit comes from vines close to the ground. It\'s picked when ready to eat, though a strawberry will become a little sweeter if left at room temperature for a day.', ImgUrl: '/images/rsz_strawberries.jpg'}),
     Product.create({name: 'Blueberries, 1 Pint', price: 1.99 , category: 'Fresh Produce', quantity: 10, descripton: 'These sweet, tangy and intensely blue berries contain antioxidants such as anthocyanin, as well as anti-inflammatories. It has sweet-tart taste and their unique blue color.', ImgUrl: '/images/rsz_blueberries.jpg'}),
@@ -43,13 +42,11 @@ const syncAndSeed =  async()=> {
   ])
   const [cody, murphy] = users;
 
-
   return {
     users: {
       cody,
       murphy
     }
-    
   };
 }
 

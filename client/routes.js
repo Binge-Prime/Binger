@@ -1,8 +1,7 @@
 import React, {Component, Fragment} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch, Redirect} from 'react-router-dom'
-import {Login, Signup, Home } from './components'
-import AllProducts from './components/AllProducts'
+import { Login, Signup, Home, AdminTools, AllProducts, productForm } from './components'
 import {me} from './store'
 
 /**
@@ -14,20 +13,25 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn} = this.props
-
+    const { isLoggedIn } = this.props
     return (
       <div>
+        {/* will need to display Home and AllProducts for Guests && add functionality to tell Guests to log in if they try to create an Order */}
+        {/* TBD: may consider adding functionality to check for Admin rights to open up some of the Admin-related routes*/}
         {isLoggedIn ? (
           <Switch>
-            <Route path="/home" component={Home} />
-            <Route path='/products' component={AllProducts}/>
+            <Route path='/home' component={Home} />
+            <Route exact path='/admin' component={AdminTools} />
+            <Route exact path='/products' component={AllProducts} />
+            <Route path='/products/create' component={productForm} />
+            <Route path='/products/update/:id' component={productForm} />
           </Switch>
         ) : (
           <Switch>
-            <Route path="/login" component={Login} />
-            <Route path="/signup" component={Signup} />
-            <Redirect to="/login" />
+            <Route path='/login' component={Login} />
+            <Route path='/signup' component={Signup} />
+            <Route path='/home' component={Home} />
+            <Route path='/products' component={AllProducts} />
           </Switch>
         )}
       </div>
