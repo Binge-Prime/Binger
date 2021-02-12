@@ -41,11 +41,26 @@ const syncAndSeed =  async()=> {
     Product.create({name: 'Lactaid 2% Reduced Fat Milk, 96 fl oz', price: 6.59, category: 'Dairy, Cheese & Eggs', quantity: 10, descripton: 'Get essential nutrients like calcium, protein, and Vitamin D from the milk your taste buds and your tummy can agree on.', ImgUrl: 'https://images-na.ssl-images-amazon.com/images/I/71MR%2B%2BfdzlL._SL1500_.jpg'}),
   ])
   const [cody, murphy] = users;
+  const [strawberry, blueberry, banana, cucumber, avacado, onion, mexicanCheese, egg, cream, stringCheese, almondMilk, milk] = products;
 
   return {
     users: {
       cody,
       murphy
+    },
+    products: {
+      strawberry, 
+      blueberry, 
+      banana, 
+      cucumber, 
+      avacado, 
+      onion, 
+      mexicanCheese, 
+      egg, 
+      cream, 
+      stringCheese, 
+      almondMilk, 
+      milk
     }
   };
 }
