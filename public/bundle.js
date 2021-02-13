@@ -2210,9 +2210,11 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
       id: "all-products-list"
     }, products.map(product => {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
-        id: "product-tile-body",
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+        to: `/product/${product.id}`,
         key: product.id
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
+        id: "product-tile-body"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         className: "thumbnail",
         src: product.ImgUrl
@@ -2230,7 +2232,7 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
         className: "button-delete",
         value: product.id,
         onClick: e => this.handleDestroy(e)
-      }, "Delete")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null));
+      }, "Delete")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null)));
     })));
   }
 
@@ -2345,6 +2347,68 @@ const Signup = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapSignup, m
 
 /***/ }),
 
+/***/ "./client/components/SingleProduct.js":
+/*!********************************************!*\
+  !*** ./client/components/SingleProduct.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _store_products__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store/products */ "./client/store/products.js");
+
+
+
+ // Displays single product
+
+class SingleProduct extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+  componentDidMount() {
+    // Fetch product data
+    this.props.init(this.props.match.params.id);
+  }
+
+  render() {
+    const {
+      product
+    } = this.props; // Since render runs first, this allows componentDidMount to fetch data before trying to display
+    // ** This will be replaced by a loading thunk in the future, to display a loading graphic while **
+    // ** we are acquiring the data                                                                  **
+
+    if (!product.name) {
+      return null;
+    }
+
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
+      id: "single-product"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+      className: "thumbnail",
+      src: `${window.location.origin}/${product.ImgUrl}`
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.name, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.price, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.category, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+      onClick: () => console.log('item added to cart')
+    }, "  add to Cart")));
+  }
+
+}
+
+const mapStateToProps = state => ({
+  product: state.products.selectedProduct
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    init: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchProduct)(id))
+  };
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, mapDispatchToProps)(SingleProduct));
+
+/***/ }),
+
 /***/ "./client/components/home.js":
 /*!***********************************!*\
   !*** ./client/components/home.js ***!
@@ -2400,7 +2464,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Signup": () => (/* reexport safe */ _AuthForm__WEBPACK_IMPORTED_MODULE_2__.Signup),
 /* harmony export */   "AdminTools": () => (/* reexport safe */ _AdminTools__WEBPACK_IMPORTED_MODULE_3__.default),
 /* harmony export */   "AllProducts": () => (/* reexport safe */ _AllProducts__WEBPACK_IMPORTED_MODULE_4__.default),
-/* harmony export */   "productForm": () => (/* reexport safe */ _components_Admin_productForm__WEBPACK_IMPORTED_MODULE_5__.default)
+/* harmony export */   "productForm": () => (/* reexport safe */ _components_Admin_productForm__WEBPACK_IMPORTED_MODULE_5__.default),
+/* harmony export */   "SingleProduct": () => (/* reexport safe */ _SingleProduct__WEBPACK_IMPORTED_MODULE_6__.default)
 /* harmony export */ });
 /* harmony import */ var _navbar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./navbar */ "./client/components/navbar.js");
 /* harmony import */ var _home__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home */ "./client/components/home.js");
@@ -2408,11 +2473,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AdminTools__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AdminTools */ "./client/components/AdminTools.js");
 /* harmony import */ var _AllProducts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./AllProducts */ "./client/components/AllProducts.js");
 /* harmony import */ var _components_Admin_productForm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Admin/productForm */ "./client/components/Admin/productForm.js");
+/* harmony import */ var _SingleProduct__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./SingleProduct */ "./client/components/SingleProduct.js");
 /**
  * `components/index.js` exists simply as a 'central export' for our components.
  * This way, we can import all of our components from the same place, rather than
  * having to figure out which file they belong to!
  */
+
 
 
 
@@ -2565,7 +2632,8 @@ __webpack_require__.r(__webpack_exports__);
 class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
   componentDidMount() {
     this.props.loadInitialData();
-  }
+  } //home screen should be our all of our products, added redirect to AllProduct component
+
 
   render() {
     const {
@@ -2582,6 +2650,9 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       exact: true,
       path: "/products",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.AllProducts
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
+      path: "/product/:id",
+      component: _components__WEBPACK_IMPORTED_MODULE_2__.SingleProduct
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/products/create",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.productForm
@@ -2600,6 +2671,11 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/products",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.AllProducts
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
+      path: "/product/:id",
+      component: _components__WEBPACK_IMPORTED_MODULE_2__.SingleProduct
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Redirect, {
+      to: "/products"
     })));
   }
 

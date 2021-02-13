@@ -12,14 +12,21 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+
 router.get('/:id', async (req, res, next) => {
   try {
-    res.send(await Product.findAll({
-      include: [Review],
-      where:{
-          id:req.params.id
-      }
-  }));
+    const product = await Product.findByPk( req.params.id )
+    res.send(product);
+  } 
+  catch (err) {
+    next(err)
+  }
+})
+
+
+router.get('/:id', async (req, res, next) => {
+  try {
+      res.send(await Product.findByPk(req.params.id));
   } 
   catch (err) {
     next(err)
