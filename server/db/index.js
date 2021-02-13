@@ -11,12 +11,12 @@ const Reviews = require('./models/review');
 User.hasMany(Orders)
 User.hasMany(Reviews)
 //---
-
+Orders.belongsTo(User)
+Product.hasMany(Orders)
 //---
-//does order belong to cart or user??
-// Orders.belongsTo(Cart)
-//---
+Reviews.belongsTo(Product)
 Product.hasMany(Reviews)
+
 
 
 const syncAndSeed =  async()=> {

@@ -2210,9 +2210,11 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
       id: "all-products-list"
     }, products.map(product => {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
-        id: "product-tile-body",
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+        to: `/product/${product.id}`,
         key: product.id
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
+        id: "product-tile-body"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         className: "thumbnail",
         src: product.ImgUrl
@@ -2230,7 +2232,7 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
         className: "button-delete",
         value: product.id,
         onClick: e => this.handleDestroy(e)
-      }, "Delete")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null));
+      }, "Delete")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null)));
     })));
   }
 
@@ -2345,6 +2347,63 @@ const Signup = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapSignup, m
 
 /***/ }),
 
+/***/ "./client/components/SingleProduct.js":
+/*!********************************************!*\
+  !*** ./client/components/SingleProduct.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _store_products__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store/products */ "./client/store/products.js");
+
+
+
+
+
+class SingleProduct extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+  async componentDidMount() {
+    //console.log('THE PROPS', this.props)
+    const productId = this.props.match.params.id;
+    await this.props.getProduct(productId);
+  }
+
+  render() {
+    const {
+      selectedProduct
+    } = this.props.products; //  console.log(selectedProduct);
+
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
+      id: "single-product"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+      className: "thumbnail",
+      src: selectedProduct.ImgUrl
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", selectedProduct.name, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", selectedProduct.price, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", selectedProduct.category, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+      onClick: () => console.log('item added to cart')
+    }, "  add to Cart")));
+  }
+
+}
+
+const mapStateToProps = state => {
+  return state;
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getProduct: productId => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchProduct)(productId))
+  };
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, mapDispatchToProps)(SingleProduct));
+
+/***/ }),
+
 /***/ "./client/components/home.js":
 /*!***********************************!*\
   !*** ./client/components/home.js ***!
@@ -2400,7 +2459,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Signup": () => (/* reexport safe */ _AuthForm__WEBPACK_IMPORTED_MODULE_2__.Signup),
 /* harmony export */   "AdminTools": () => (/* reexport safe */ _AdminTools__WEBPACK_IMPORTED_MODULE_3__.default),
 /* harmony export */   "AllProducts": () => (/* reexport safe */ _AllProducts__WEBPACK_IMPORTED_MODULE_4__.default),
-/* harmony export */   "productForm": () => (/* reexport safe */ _components_Admin_productForm__WEBPACK_IMPORTED_MODULE_5__.default)
+/* harmony export */   "productForm": () => (/* reexport safe */ _components_Admin_productForm__WEBPACK_IMPORTED_MODULE_5__.default),
+/* harmony export */   "SingleProduct": () => (/* reexport safe */ _SingleProduct__WEBPACK_IMPORTED_MODULE_6__.default)
 /* harmony export */ });
 /* harmony import */ var _navbar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./navbar */ "./client/components/navbar.js");
 /* harmony import */ var _home__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home */ "./client/components/home.js");
@@ -2408,11 +2468,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AdminTools__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AdminTools */ "./client/components/AdminTools.js");
 /* harmony import */ var _AllProducts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./AllProducts */ "./client/components/AllProducts.js");
 /* harmony import */ var _components_Admin_productForm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Admin/productForm */ "./client/components/Admin/productForm.js");
+/* harmony import */ var _SingleProduct__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./SingleProduct */ "./client/components/SingleProduct.js");
 /**
  * `components/index.js` exists simply as a 'central export' for our components.
  * This way, we can import all of our components from the same place, rather than
  * having to figure out which file they belong to!
  */
+
 
 
 
@@ -2584,6 +2646,9 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       path: "/products",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.AllProducts
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
+      path: "/product/:id",
+      component: _components__WEBPACK_IMPORTED_MODULE_2__.SingleProduct
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/products/create",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.productForm
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
@@ -2601,6 +2666,9 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/products",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.AllProducts
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
+      path: "/product/:id",
+      component: _components__WEBPACK_IMPORTED_MODULE_2__.SingleProduct
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Redirect, {
       to: "/products"
     })));

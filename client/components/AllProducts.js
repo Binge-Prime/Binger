@@ -20,7 +20,8 @@ class AllProducts extends Component {
                 <ul id='all-products-list'>
                     { products.map((product) => {
                         return (
-                            <li id='product-tile-body' key={ product.id }>
+                            <Link to={`/product/${product.id}`} key={ product.id }>
+                            <li id='product-tile-body'  >
                                 {/* need to wrap the product tile in a <Link> to redirect to SingleProduct page on click*/}
                                 <img className='thumbnail' src={product.ImgUrl}/>
                                 <ul id='product-tile-info'>
@@ -28,7 +29,7 @@ class AllProducts extends Component {
                                     <li>${ product.price }</li>
                                     {/* <li> { product.avgRating } </li> */}
                                 </ul>
-
+                               
                                 { isLoggedIn ? (
                                     <div id='product-tile-buttons'>
                                         {/* for now, these buttons are rendered for all logged in users, but should only be available to admins; Need for "admin view" of AllProducts to be discussed */}
@@ -42,6 +43,7 @@ class AllProducts extends Component {
                                 ) : (<br/>)
                                 }
                             </li>
+                            </Link>
                         )
                     })}
                 </ul>
