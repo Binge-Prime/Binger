@@ -3,24 +3,32 @@ import { connect } from 'react-redux';
 import { Component } from 'react';
 import { fetchProduct } from '../store/products'
 
-
+// Displays single product
 class SingleProduct extends Component {
-    async componentDidMount () {
-         //console.log('THE PROPS', this.props)
-         const productId = this.props.match.params.id
-         await this.props.getProduct(productId);
-        
+    componentDidMount () {
+        // Fetch product data
+        this.props.init(this.props.match.params.id);
     }
+
     render () {
-        const { selectedProduct } = this.props.products;
-        //  console.log(selectedProduct);
+        const { product } = this.props;
+
+        // Since render runs first, this allows componentDidMount to fetch data before trying to display
+        // ** This will be replaced by a loading thunk in the future, to display a loading graphic while **
+        // ** we are acquiring the data                                                                  **
+        if (!product.name) {
+            return null
+        }
+        
         return (
             <div>
                 <ul id='single-product'>
-                <img className ='thumbnail' src={ selectedProduct.ImgUrl }/>
-                    <li> {selectedProduct.name} </li>
-                    <li> {selectedProduct.price} </li>
-                    <li> {selectedProduct.category} </li>
+                {/* window.location.origin covers the edge case of image pathing breaking for certain images */}
+                <img className ='thumbnail' src={ `${ window.location.origin }/${ product.ImgUrl }` }/>
+                    <li> {product.name} </li>
+                    <li> {product.price} </li>
+                    <li> {product.category} </li>
+                    {/* console.log to be replaced with cart thunk */}
                    <button onClick = { () => console.log('item added to cart')} >  add to Cart</button>
                 </ul>
             </div>
@@ -28,16 +36,11 @@ class SingleProduct extends Component {
     }
 }
 
-
-const mapStateToProps = (state) => {
-    return state
-}
-
-
+const mapStateToProps = (state) => ({ product: state.products.selectedProduct })
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getProduct: (productId) => dispatch(fetchProduct(productId))
+        init: (id) => dispatch(fetchProduct(id))
     }
 }
 

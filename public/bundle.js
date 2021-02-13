@@ -2364,39 +2364,44 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
+ // Displays single product
 
 class SingleProduct extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
-  async componentDidMount() {
-    //console.log('THE PROPS', this.props)
-    const productId = this.props.match.params.id;
-    await this.props.getProduct(productId);
+  componentDidMount() {
+    // Fetch product data
+    this.props.init(this.props.match.params.id);
   }
 
   render() {
     const {
-      selectedProduct
-    } = this.props.products; //  console.log(selectedProduct);
+      product
+    } = this.props; // Since render runs first, this allows componentDidMount to fetch data before trying to display
+    // ** This will be replaced by a loading thunk in the future, to display a loading graphic while **
+    // ** we are acquiring the data                                                                  **
+
+    if (!product.name) {
+      return null;
+    }
 
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
       id: "single-product"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
       className: "thumbnail",
-      src: selectedProduct.ImgUrl
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", selectedProduct.name, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", selectedProduct.price, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", selectedProduct.category, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+      src: `${window.location.origin}/${product.ImgUrl}`
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.name, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.price, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.category, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
       onClick: () => console.log('item added to cart')
     }, "  add to Cart")));
   }
 
 }
 
-const mapStateToProps = state => {
-  return state;
-};
+const mapStateToProps = state => ({
+  product: state.products.selectedProduct
+});
 
 const mapDispatchToProps = dispatch => {
   return {
-    getProduct: productId => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchProduct)(productId))
+    init: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchProduct)(id))
   };
 };
 
