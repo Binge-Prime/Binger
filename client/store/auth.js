@@ -29,10 +29,10 @@ export const me = () => async dispatch => {
   }
 }
 
-export const authenticate = (email, password, method) => async dispatch => {
+export const authenticate = (email, password, method, name=null, githubId=null) => async dispatch => {
   let res
   try {
-    res = await axios.post(`/auth/${method}`, {email, password})
+    res = await axios.post(`/auth/${method}`, {email, password, name, githubId})
     storage().setItem(TOKEN, res.data.token)
     dispatch(me())
   } catch (authError) {

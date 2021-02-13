@@ -2288,7 +2288,12 @@ const AuthForm = props => {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
     onSubmit: handleSubmit,
     name: name
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+  }, name === 'signup' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+    htmlFor: "username"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", null, "Name")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+    name: "username",
+    type: "username"
+  })) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
     htmlFor: "email"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", null, "Email")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
     name: "email",
@@ -2298,9 +2303,14 @@ const AuthForm = props => {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", null, "Password")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
     name: "password",
     type: "password"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+  })), name === 'signup' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+    htmlFor: "githubId"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", null, "Github Username(optional)")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+    name: "githubId",
+    type: "githubId"
+  })) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
     type: "submit"
-  }, displayName)), error && error.response && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, " ", error.response.data, " ")), window.githubURL && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+  }, displayName), error && error.response && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, " ", error.response.data, " ")), window.githubURL && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
     href: window.githubURL
   }, "Login / Register Via Github "));
 };
@@ -2336,6 +2346,19 @@ const mapDispatch = dispatch => {
       const formName = evt.target.name;
       const email = evt.target.email.value;
       const password = evt.target.password.value;
+
+      if (formName === 'signup') {
+        const name = evt.target.username.value;
+        let githubId = evt.target.githubId.value;
+
+        if (githubId === '') {
+          githubId = null;
+        }
+
+        dispatch((0,_store__WEBPACK_IMPORTED_MODULE_2__.authenticate)(email, password, formName, name, githubId));
+        return;
+      }
+
       dispatch((0,_store__WEBPACK_IMPORTED_MODULE_2__.authenticate)(email, password, formName));
     }
 
@@ -2431,9 +2454,9 @@ __webpack_require__.r(__webpack_exports__);
 
 const Home = props => {
   const {
-    email
+    name
   } = props;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "Welcome, ", email));
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "Welcome, ", name, "!"));
 };
 /**
  * CONTAINER
@@ -2441,7 +2464,7 @@ const Home = props => {
 
 const mapState = state => {
   return {
-    email: state.auth.email
+    name: state.auth.name
   };
 };
 
@@ -2659,6 +2682,8 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/products/update/:id",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.productForm
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Redirect, {
+      to: "/home"
     })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/login",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.Login
@@ -2761,13 +2786,15 @@ const me = () => async dispatch => {
     return dispatch(setAuth(res.data));
   }
 };
-const authenticate = (email, password, method) => async dispatch => {
+const authenticate = (email, password, method, name = null, githubId = null) => async dispatch => {
   let res;
 
   try {
     res = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/auth/${method}`, {
       email,
-      password
+      password,
+      name,
+      githubId
     });
     storage().setItem(TOKEN, res.data.token);
     dispatch(me());
