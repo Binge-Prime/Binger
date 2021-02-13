@@ -6,6 +6,14 @@ body {
 a {
   text-decoration: none;
 }
+hr {
+  border: 0;
+  clear:both;
+  display:block;
+  width: 96%;               
+  background-color: black;
+  height: 1px;
+}
 label {
   display: block;
 }
@@ -47,12 +55,24 @@ form div {
   border: 1px solid black;
   border-radius: 5px;
 }
+#product-tile-body:hover {
+  border: 6px solid dodgerblue;
+  margin: 10px;
+}
+#product-tile-body > a {
+  text-decoration: none;
+  color: black;
+}
 #product-tile-info {
   padding: 0;
 }
 #product-tile-buttons button{
   margin-top: 0.5em;
   width: 50%
+}
+#product-tile-buttons button:hover {
+  background-color: dodgerblue;
+  color: white;
 }
 
 /* PRODUCT FORM */
