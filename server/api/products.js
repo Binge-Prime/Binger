@@ -28,14 +28,14 @@ router.get('/:id', async (req, res, next) => {
 })
 
 
-// router.get('/:id', async (req, res, next) => {
-//   try {
-//       res.send(await Product.findByPk(req.params.id));
-//   } 
-//   catch (err) {
-//     next(err)
-//   }
-// })
+router.get('/:id', async (req, res, next) => {
+  try {
+      res.send(await Product.findByPk(req.params.id));
+  } 
+  catch (err) {
+    next(err)
+  }
+})
 
 router.put('/update/:id',async(req,res,next)=>{
   try {
