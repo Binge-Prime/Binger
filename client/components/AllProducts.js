@@ -20,16 +20,19 @@ class AllProducts extends Component {
                 <ul id='all-products-list'>
                     { products.map((product) => {
                         return (
-                            <Link to={`/product/${product.id}`} key={ product.id }>
-                            <li id='product-tile-body'  >
-                                {/* need to wrap the product tile in a <Link> to redirect to SingleProduct page on click*/}
-                                <img className='thumbnail' src={product.ImgUrl}/>
-                                <ul id='product-tile-info'>
-                                    <li>{ product.name }</li>
-                                    <li>${ product.price }</li>
-                                    {/* <li> { product.avgRating } </li> */}
-                                </ul>
-                               
+                            <div key={ product.id }id='product-tile-body'>
+                                <Link to={`/product/${product.id}`} key={ product.id }>
+                                <li>
+                                    {/* need to wrap the product tile in a <Link> to redirect to SingleProduct page on click*/}
+                                    <img className='thumbnail' src={product.ImgUrl}/>
+                                    <ul id='product-tile-info'>
+                                        <li>{ product.name }</li>
+                                        <li>${ product.price }</li>
+                                        {/* <li> { product.avgRating } </li> */}
+                                    </ul>
+                                
+                                </li>
+                                </Link>
                                 { isLoggedIn ? (
                                     <div id='product-tile-buttons'>
                                         {/* for now, these buttons are rendered for all logged in users, but should only be available to admins; Need for "admin view" of AllProducts to be discussed */}
@@ -42,8 +45,7 @@ class AllProducts extends Component {
                                     </div>
                                 ) : (<br/>)
                                 }
-                            </li>
-                            </Link>
+                            </div>
                         )
                     })}
                 </ul>

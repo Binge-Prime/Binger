@@ -27,6 +27,7 @@ class Routes extends Component {
             <Route path='/product/:id' component={SingleProduct} />
             <Route path='/products/create' component={productForm} />
             <Route path='/products/update/:id' component={productForm} />
+            <Redirect to="/home" />
           </Switch>
         ) : (
           <Switch>
