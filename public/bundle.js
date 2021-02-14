@@ -2211,6 +2211,7 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       id: "all-products-list"
     }, products.map(product => {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        key: product.id,
         id: "product-tile-body"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
         to: `/product/${product.id}`,

@@ -20,7 +20,7 @@ class AllProducts extends Component {
                 <ul id='all-products-list'>
                     { products.map((product) => {
                         return (
-                            <div id='product-tile-body'>
+                            <div key={ product.id }id='product-tile-body'>
                                 <Link to={`/product/${product.id}`} key={ product.id }>
                                 <li>
                                     {/* need to wrap the product tile in a <Link> to redirect to SingleProduct page on click*/}
