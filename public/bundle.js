@@ -2371,6 +2371,65 @@ const Signup = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapSignup, m
 
 /***/ }),
 
+/***/ "./client/components/Cart.js":
+/*!***********************************!*\
+  !*** ./client/components/Cart.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _store_products__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store/products */ "./client/store/products.js");
+
+
+
+ // Displays single product
+
+class Cart extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+  async componentDidMount() {
+    // Fetch product data
+    console.log('THE PROPS', this.props);
+    const orderItems = await this.props.orderItems(this.props.auth.id); //console.log(userOrders);
+    //   this.props.init(this.props.match.params.id);
+  }
+
+  render() {
+    if (!this.props.products.userOrders) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "...loading");
+    }
+
+    const userOrders = this.props.products.userOrders.products.map(order => {
+      return JSON.parse(order);
+    });
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, userOrders.map(order => {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        key: order.id
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "thumbnail",
+        src: order.ImgUrl
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, order.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h4", null, `$ ${order.price}`));
+    }));
+  }
+
+}
+
+const mapStateToProps = state => state;
+
+const mapDispatchToProps = dispatch => {
+  return {
+    orderItems: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchOrders)(id))
+  };
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, mapDispatchToProps)(Cart));
+
+/***/ }),
+
 /***/ "./client/components/SingleProduct.js":
 /*!********************************************!*\
   !*** ./client/components/SingleProduct.js ***!
@@ -2489,7 +2548,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "AdminTools": () => (/* reexport safe */ _AdminTools__WEBPACK_IMPORTED_MODULE_3__.default),
 /* harmony export */   "AllProducts": () => (/* reexport safe */ _AllProducts__WEBPACK_IMPORTED_MODULE_4__.default),
 /* harmony export */   "productForm": () => (/* reexport safe */ _components_Admin_productForm__WEBPACK_IMPORTED_MODULE_5__.default),
-/* harmony export */   "SingleProduct": () => (/* reexport safe */ _SingleProduct__WEBPACK_IMPORTED_MODULE_6__.default)
+/* harmony export */   "SingleProduct": () => (/* reexport safe */ _SingleProduct__WEBPACK_IMPORTED_MODULE_6__.default),
+/* harmony export */   "Cart": () => (/* reexport safe */ _Cart__WEBPACK_IMPORTED_MODULE_7__.default)
 /* harmony export */ });
 /* harmony import */ var _navbar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./navbar */ "./client/components/navbar.js");
 /* harmony import */ var _home__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home */ "./client/components/home.js");
@@ -2498,11 +2558,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AllProducts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./AllProducts */ "./client/components/AllProducts.js");
 /* harmony import */ var _components_Admin_productForm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Admin/productForm */ "./client/components/Admin/productForm.js");
 /* harmony import */ var _SingleProduct__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./SingleProduct */ "./client/components/SingleProduct.js");
+/* harmony import */ var _Cart__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Cart */ "./client/components/Cart.js");
 /**
  * `components/index.js` exists simply as a 'central export' for our components.
  * This way, we can import all of our components from the same place, rather than
  * having to figure out which file they belong to!
  */
+
 
 
 
@@ -2541,7 +2603,7 @@ const Navbar = ({
 }, "Home"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
   to: "/products"
 }, "Products"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
-  to: "/"
+  to: "/cart"
 }, "Cart (n/a)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
   to: "/"
 }, "Account (n/a)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
@@ -2674,6 +2736,9 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       exact: true,
       path: "/products",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.AllProducts
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
+      path: "/cart",
+      component: _components__WEBPACK_IMPORTED_MODULE_2__.Cart
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/product/:id",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.SingleProduct
@@ -2883,6 +2948,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "_createProduct": () => (/* binding */ _createProduct),
 /* harmony export */   "_updateProduct": () => (/* binding */ _updateProduct),
 /* harmony export */   "_deleteProduct": () => (/* binding */ _deleteProduct),
+/* harmony export */   "_setCartItems": () => (/* binding */ _setCartItems),
+/* harmony export */   "fetchOrders": () => (/* binding */ fetchOrders),
 /* harmony export */   "fetchProducts": () => (/* binding */ fetchProducts),
 /* harmony export */   "fetchProduct": () => (/* binding */ fetchProduct),
 /* harmony export */   "createProduct": () => (/* binding */ createProduct),
@@ -2903,7 +2970,8 @@ const SET_PRODUCTS = 'SET_PRODUCTS';
 const SET_SELECTED_PRODUCT = 'SET_SELECTED_PRODUCT';
 const CREATE_PRODUCT = 'CREATE_PRODUCT';
 const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
-const DELETE_PRODUCT = 'DELETE_PRODUCT'; // ACTIONS (Q: do we need to export these?)
+const DELETE_PRODUCT = 'DELETE_PRODUCT';
+const FETCH_ORDERS = "FETCH_ORDERS"; // ACTIONS (Q: do we need to export these?)
 
 const setProducts = products => ({
   type: SET_PRODUCTS,
@@ -2924,8 +2992,20 @@ const _updateProduct = product => ({
 const _deleteProduct = product => ({
   type: DELETE_PRODUCT,
   product
+});
+const _setCartItems = userOrders => ({
+  type: FETCH_ORDERS,
+  userOrders
 }); // THUNKS
-// fetches all product data
+//grab all the orders that belong to specific user
+
+const fetchOrders = userId => {
+  return async dispatch => {
+    const userOrders = (await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/api/cart/${userId}`)).data; //dispatch the users orders
+
+    dispatch(_setCartItems(userOrders));
+  };
+}; // fetches all product data
 
 const fetchProducts = () => {
   return async dispatch => {
@@ -2987,6 +3067,11 @@ function productReducer(state = initialState, action) {
     case DELETE_PRODUCT:
       return { ...state,
         products: state.products.filter(product => product.id !== action.product.id)
+      };
+
+    case FETCH_ORDERS:
+      return { ...state,
+        userOrders: action.userOrders
       };
 
     default:
