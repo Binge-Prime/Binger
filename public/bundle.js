@@ -2393,14 +2393,13 @@ __webpack_require__.r(__webpack_exports__);
 class Cart extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
   async componentDidMount() {
     // Fetch product data
-    console.log('THE PROPS', this.props);
-    const orderItems = await this.props.orderItems(this.props.auth.id); //console.log(userOrders);
-    //   this.props.init(this.props.match.params.id);
+    const orderItems = await this.props.orderItems(this.props.auth.id);
   }
 
   render() {
+    // code broke without this line 
     if (!this.props.products.userOrders) {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "...loading");
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "No Items in cart...");
     }
 
     const userOrders = this.props.products.userOrders.products.map(order => {
@@ -2457,8 +2456,12 @@ class SingleProduct extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
 
   render() {
     const {
-      product
-    } = this.props; // Since render runs first, this allows componentDidMount to fetch data before trying to display
+      product,
+      userId,
+      addToCart
+    } = this.props; //console.log(this.props);
+    //this.props.product.id is the productId
+    // Since render runs first, this allows componentDidMount to fetch data before trying to display
     // ** This will be replaced by a loading thunk in the future, to display a loading graphic while **
     // ** we are acquiring the data                                                                  **
 
@@ -2472,19 +2475,21 @@ class SingleProduct extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       className: "thumbnail",
       src: `${window.location.origin}/${product.ImgUrl}`
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.name, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.price, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.category, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
-      onClick: () => console.log('item added to cart')
+      onClick: () => addToCart(userId, this.props.product.id)
     }, "  add to Cart")));
   }
 
 }
 
 const mapStateToProps = state => ({
-  product: state.products.selectedProduct
+  product: state.products.selectedProduct,
+  userId: state.auth.id
 });
 
 const mapDispatchToProps = dispatch => {
   return {
-    init: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchProduct)(id))
+    init: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchProduct)(id)),
+    addToCart: (userId, productId) => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.addOrder)(userId, productId))
   };
 };
 
@@ -2949,7 +2954,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "_updateProduct": () => (/* binding */ _updateProduct),
 /* harmony export */   "_deleteProduct": () => (/* binding */ _deleteProduct),
 /* harmony export */   "_setCartItems": () => (/* binding */ _setCartItems),
+/* harmony export */   "_addToOrders": () => (/* binding */ _addToOrders),
 /* harmony export */   "fetchOrders": () => (/* binding */ fetchOrders),
+/* harmony export */   "addOrder": () => (/* binding */ addOrder),
 /* harmony export */   "fetchProducts": () => (/* binding */ fetchProducts),
 /* harmony export */   "fetchProduct": () => (/* binding */ fetchProduct),
 /* harmony export */   "createProduct": () => (/* binding */ createProduct),
@@ -2971,7 +2978,8 @@ const SET_SELECTED_PRODUCT = 'SET_SELECTED_PRODUCT';
 const CREATE_PRODUCT = 'CREATE_PRODUCT';
 const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 const DELETE_PRODUCT = 'DELETE_PRODUCT';
-const FETCH_ORDERS = "FETCH_ORDERS"; // ACTIONS (Q: do we need to export these?)
+const FETCH_ORDERS = "FETCH_ORDERS";
+const ADD_TO_ORDERS = "ADD_TO_ORDERS"; // ACTIONS (Q: do we need to export these?)
 
 const setProducts = products => ({
   type: SET_PRODUCTS,
@@ -2996,6 +3004,10 @@ const _deleteProduct = product => ({
 const _setCartItems = userOrders => ({
   type: FETCH_ORDERS,
   userOrders
+});
+const _addToOrders = order => ({
+  type: ADD_TO_ORDERS,
+  order
 }); // THUNKS
 //grab all the orders that belong to specific user
 
@@ -3004,6 +3016,17 @@ const fetchOrders = userId => {
     const userOrders = (await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/api/cart/${userId}`)).data; //dispatch the users orders
 
     dispatch(_setCartItems(userOrders));
+  };
+}; // grabs the userId and current productId from our singleProduct components onClick 
+
+const addOrder = (userId, productId) => {
+  return async dispatch => {
+    //console.log('WE HERE USERID and PRODUCTID', userId, productId);
+    //pass in productId so we can use it to find product in our backend/routes
+    const order = (await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/api/cart/${userId}`, {
+      productId
+    })).data;
+    dispatch(_addToOrders(order));
   };
 }; // fetches all product data
 
@@ -3072,6 +3095,12 @@ function productReducer(state = initialState, action) {
     case FETCH_ORDERS:
       return { ...state,
         userOrders: action.userOrders
+      };
+    // splats out the state and sends users order      
+
+    case ADD_TO_ORDERS:
+      return { ...state,
+        order: action.order
       };
 
     default:

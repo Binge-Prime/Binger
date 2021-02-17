@@ -8,17 +8,16 @@ import { fetchOrders } from '../store/products'
 class Cart extends Component {
     async componentDidMount () {
         // Fetch product data
-        console.log('THE PROPS', this.props);
-        const orderItems = await this.props.orderItems(this.props.auth.id);        
-        //console.log(userOrders);
         
-     //   this.props.init(this.props.match.params.id);
+        const orderItems = await this.props.orderItems(this.props.auth.id);        
+        
     }
 
     render () {
+        // code broke without this line 
         if(!this.props.products.userOrders){
             return (
-                <p>...loading</p>
+                <p>No Items in cart...</p>
             )
         }
         const userOrders = (this.props.products.userOrders.products).map(order => {
