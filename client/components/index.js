@@ -6,7 +6,10 @@
 export {default as Navbar} from './navbar'
 export {default as Home} from './home'
 export { Login, Signup } from './AuthForm'
+
 export { default as AdminTools } from './AdminTools'
 export { default as AllProducts } from './AllProducts'
-export { default as productForm } from '../components/Admin/productForm'
 export { default as SingleProduct } from './SingleProduct'
+
+export { default as ProductForm } from '../components/Admin/ProductForm'
+export { default as AdminProducts } from '../components/Admin/AdminProducts'

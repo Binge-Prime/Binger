@@ -21,27 +21,19 @@ class AllProducts extends Component {
                     { products.map((product) => {
                         return (
                             <div key={ product.id }id='product-tile-body'>
-                                <Link to={`/product/${product.id}`} key={ product.id }>
+                                <Link to={`/product/${product.id}`}>
                                 <li>
-                                    {/* need to wrap the product tile in a <Link> to redirect to SingleProduct page on click*/}
                                     <img className='thumbnail' src={product.ImgUrl}/>
                                     <ul id='product-tile-info'>
                                         <li>{ product.name }</li>
                                         <li>${ product.price }</li>
                                         {/* <li> { product.avgRating } </li> */}
                                     </ul>
-                                
                                 </li>
                                 </Link>
                                 { isLoggedIn ? (
                                     <div id='product-tile-buttons'>
-                                        {/* for now, these buttons are rendered for all logged in users, but should only be available to admins; Need for "admin view" of AllProducts to be discussed */}
-                                        
-                                        <Link to={`/products/update/${product.id}`}>
-                                            <button type='button' className='button-access'>Edit</button>
-                                        </Link>
-                
-                                        <button type='button' className='button-delete' value={product.id} onClick={(e) => this.handleDestroy(e)}>Delete</button>
+                                        <button type='button' className='button-enter' onClick={() => console.log('item added to cart')} >Add to Cart</button>
                                     </div>
                                 ) : (<br/>)
                                 }

@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch, Redirect} from 'react-router-dom'
-import { Login, Signup, Home, AdminTools, AllProducts, productForm, SingleProduct } from './components'
+import { Login, Signup, Home, AdminTools, AdminProducts, AllProducts, ProductForm, SingleProduct } from './components'
 import {me} from './store'
 
 /**
@@ -23,10 +23,11 @@ class Routes extends Component {
           <Switch>
             <Route path='/home' component={Home} />
             <Route exact path='/admin' component={AdminTools} />
+            <Route path='/admin/products' component={AdminProducts} />
             <Route exact path='/products' component={AllProducts} />
             <Route path='/product/:id' component={SingleProduct} />
-            <Route path='/products/create' component={productForm} />
-            <Route path='/products/update/:id' component={productForm} />
+            <Route path='/products/create' component={ProductForm} />
+            <Route path='/products/update/:id' component={ProductForm} />
             <Redirect to="/home" />
           </Switch>
         ) : (
@@ -36,7 +37,7 @@ class Routes extends Component {
             <Route path='/home' component={Home} />
             <Route path='/products' component={AllProducts} />
             <Route  path='/product/:id' component={SingleProduct} />
-            <Redirect to="/products" />
+            {/* <Redirect to="/products" /> */}
           </Switch>
         )}
       </div>

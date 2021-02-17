@@ -1961,9 +1961,97 @@ const App = () => {
 
 /***/ }),
 
-/***/ "./client/components/Admin/productForm.js":
+/***/ "./client/components/Admin/AdminProducts.js":
+/*!**************************************************!*\
+  !*** ./client/components/Admin/AdminProducts.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _store_products__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../store/products */ "./client/store/products.js");
+
+
+
+
+
+
+class AdminProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+  componentDidMount() {
+    this.props.init();
+    this.handleDestroy = this.handleDestroy.bind(this);
+  }
+
+  handleDestroy(e) {
+    this.props.removeProduct(e.target.value);
+  }
+
+  addInventoryOrder(e) {
+    console.log('added to inventory order');
+  }
+
+  render() {
+    const {
+      products
+    } = this.props;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("table", {
+      id: "admin-products-table"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Product Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Category"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Price"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Quantity"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Average Rating"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Weekly Orders"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Actions"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tbody", null, products.map(product => {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", {
+        key: product.id,
+        id: "admin-products-row"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+        to: `/product/${product.id}`
+      }, product.name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, product.category), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, product.price), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, product.quantity), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, "product.avgRating"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, "product.orders"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+        id: "admin-products-buttons"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+        to: `/products/update/${product.id}`
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+        type: "button",
+        className: "button-action"
+      }, "Edit")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+        type: "button",
+        className: "button-delete",
+        value: product.id,
+        onClick: e => this.handleDestroy(e)
+      }, "Delete"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+        type: "button",
+        className: "button-action",
+        value: product.id,
+        onClick: e => this.addInventoryOrder(e)
+      }, "Add Inventory")));
+    }))));
+  }
+
+}
+
+const mapStateToProps = state => {
+  return {
+    products: state.products.products,
+    isLoggedIn: !!state.auth.id
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    init: () => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchProducts)()),
+    removeProduct: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.deleteProduct)(id))
+  };
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, mapDispatchToProps)(AdminProducts));
+
+/***/ }),
+
+/***/ "./client/components/Admin/ProductForm.js":
 /*!************************************************!*\
-  !*** ./client/components/Admin/productForm.js ***!
+  !*** ./client/components/Admin/ProductForm.js ***!
   \************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -1979,7 +2067,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class productForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+class ProductForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
   constructor({
     product
   }) {
@@ -2009,7 +2097,7 @@ class productForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       history
     } = this.props;
     this.props.removeProduct(product.id);
-    history.push('/products');
+    history.push('/admin/products');
   }
 
   handleSubmit(e) {
@@ -2025,11 +2113,11 @@ class productForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       this.props.editProduct({ ...this.state,
         id: product.id
       });
-      history.push('/products');
+      history.push('/admin/products');
     } else {
       this.props.addProduct({ ...this.state
       });
-      history.push('/products');
+      history.push('/admin/products');
     }
   }
 
@@ -2097,11 +2185,11 @@ class productForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
       type: "submit",
       className: "button-submit"
-    }, product.id ? 'Update ' : 'Create ', name), !!product.id && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+    }, product.id ? 'Update ' : 'Create '), !!product.id && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
       type: "button",
       className: "button-delete",
       onClick: () => this.handleDestroy()
-    }, `Delete ${product.name}`))));
+    }, `Delete`))));
   }
 
 }
@@ -2122,7 +2210,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, mapDispatchToProps)(productForm));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, mapDispatchToProps)(ProductForm));
 
 /***/ }),
 
@@ -2152,8 +2240,8 @@ const AdminTools = ({
 react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
   id: "adminLinks"
 }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
-  to: "/adminAllProducts"
-}, "Edit Products (N/a)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
+  to: "/admin/products"
+}, "Edit Products"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
   to: "/products/create"
 }, "Create Product"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
   to: "/adminAllUsers"
@@ -2214,8 +2302,7 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
         key: product.id,
         id: "product-tile-body"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
-        to: `/product/${product.id}`,
-        key: product.id
+        to: `/product/${product.id}`
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         className: "thumbnail",
         src: product.ImgUrl
@@ -2223,17 +2310,11 @@ class AllProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
         id: "product-tile-info"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, product.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, "$", product.price)))), isLoggedIn ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "product-tile-buttons"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
-        to: `/products/update/${product.id}`
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
         type: "button",
-        className: "button-access"
-      }, "Edit")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
-        type: "button",
-        className: "button-delete",
-        value: product.id,
-        onClick: e => this.handleDestroy(e)
-      }, "Delete")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null));
+        className: "button-enter",
+        onClick: () => console.log('item added to cart')
+      }, "Add to Cart")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null));
     })));
   }
 
@@ -2488,21 +2569,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Signup": () => (/* reexport safe */ _AuthForm__WEBPACK_IMPORTED_MODULE_2__.Signup),
 /* harmony export */   "AdminTools": () => (/* reexport safe */ _AdminTools__WEBPACK_IMPORTED_MODULE_3__.default),
 /* harmony export */   "AllProducts": () => (/* reexport safe */ _AllProducts__WEBPACK_IMPORTED_MODULE_4__.default),
-/* harmony export */   "productForm": () => (/* reexport safe */ _components_Admin_productForm__WEBPACK_IMPORTED_MODULE_5__.default),
-/* harmony export */   "SingleProduct": () => (/* reexport safe */ _SingleProduct__WEBPACK_IMPORTED_MODULE_6__.default)
+/* harmony export */   "SingleProduct": () => (/* reexport safe */ _SingleProduct__WEBPACK_IMPORTED_MODULE_5__.default),
+/* harmony export */   "ProductForm": () => (/* reexport safe */ _components_Admin_ProductForm__WEBPACK_IMPORTED_MODULE_6__.default),
+/* harmony export */   "AdminProducts": () => (/* reexport safe */ _components_Admin_AdminProducts__WEBPACK_IMPORTED_MODULE_7__.default)
 /* harmony export */ });
 /* harmony import */ var _navbar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./navbar */ "./client/components/navbar.js");
 /* harmony import */ var _home__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home */ "./client/components/home.js");
 /* harmony import */ var _AuthForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AuthForm */ "./client/components/AuthForm.js");
 /* harmony import */ var _AdminTools__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AdminTools */ "./client/components/AdminTools.js");
 /* harmony import */ var _AllProducts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./AllProducts */ "./client/components/AllProducts.js");
-/* harmony import */ var _components_Admin_productForm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Admin/productForm */ "./client/components/Admin/productForm.js");
-/* harmony import */ var _SingleProduct__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./SingleProduct */ "./client/components/SingleProduct.js");
+/* harmony import */ var _SingleProduct__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SingleProduct */ "./client/components/SingleProduct.js");
+/* harmony import */ var _components_Admin_ProductForm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/Admin/ProductForm */ "./client/components/Admin/ProductForm.js");
+/* harmony import */ var _components_Admin_AdminProducts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/Admin/AdminProducts */ "./client/components/Admin/AdminProducts.js");
 /**
  * `components/index.js` exists simply as a 'central export' for our components.
  * This way, we can import all of our components from the same place, rather than
  * having to figure out which file they belong to!
  */
+
 
 
 
@@ -2671,6 +2755,9 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       path: "/admin",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.AdminTools
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
+      path: "/admin/products",
+      component: _components__WEBPACK_IMPORTED_MODULE_2__.AdminProducts
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       exact: true,
       path: "/products",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.AllProducts
@@ -2679,10 +2766,10 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       component: _components__WEBPACK_IMPORTED_MODULE_2__.SingleProduct
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/products/create",
-      component: _components__WEBPACK_IMPORTED_MODULE_2__.productForm
+      component: _components__WEBPACK_IMPORTED_MODULE_2__.ProductForm
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/products/update/:id",
-      component: _components__WEBPACK_IMPORTED_MODULE_2__.productForm
+      component: _components__WEBPACK_IMPORTED_MODULE_2__.ProductForm
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Redirect, {
       to: "/home"
     })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
@@ -2700,8 +2787,6 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/product/:id",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.SingleProduct
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Redirect, {
-      to: "/products"
     })));
   }
 
