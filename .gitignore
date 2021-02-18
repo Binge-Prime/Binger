@@ -1,4 +1,4 @@
 secrets.js
 node_modules/
->>>>>>> 02c666fdecf9336eab8d90bfef8746af61f839b6
-node_modules/
+public/bundle.js
+public/bundle.js.map

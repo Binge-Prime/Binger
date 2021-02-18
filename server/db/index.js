@@ -4,15 +4,15 @@ const db = require('./db')
 
 const User = require('./models/user');
 // const Cart = require('./models/cart');
-const Orders = require('./models/order');
+const Order = require('./models/order');
 const Product = require('./models/product');
 const Reviews = require('./models/review');
 //associations could go here!
-User.hasMany(Orders)
+User.hasMany(Order)
 User.hasMany(Reviews)
 //---
-Orders.belongsTo(User)
-Product.hasMany(Orders)
+Order.belongsTo(User)
+Product.hasMany(Order)
 //---
 Reviews.belongsTo(Product)
 Product.hasMany(Reviews)
@@ -113,6 +113,26 @@ const syncAndSeed =  async()=> {
       ImgUrl: '/images/sze_lactaidmilk.jpg'
     })
   ])
+
+  //HARD CODED AN ORDER TIED TO OUR USER NAMED CODY
+    Order.create({
+      userId: 1,
+      isOpen: true,
+      products: [
+        {
+        name: 'Califia Farms - Almond Milk, Unsweetened, 48oz,', 
+        price: 4.39, 
+        ImgUrl: '/images/sze_almondmilk.jpg'
+      }
+      ]
+    })
+    Order.create({
+      userId: 2,
+      isOpen: true,
+      products: []
+    })
+
+
   const [cody, murphy] = users;
   const [strawberry, blueberry, banana, cucumber, avacado, onion, mexicanCheese, egg, cream, stringCheese, almondMilk, milk] = products;
 
@@ -143,6 +163,7 @@ module.exports = {
   syncAndSeed,
   models: {
     User,
-    Product
+    Product,
+    Order
   }
 }
