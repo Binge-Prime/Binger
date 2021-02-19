@@ -1,6 +1,6 @@
 const router = require('express').Router()
 // exported product models to find their id 
-const { models: { Order, Product }} = require('../db')
+const { models: { Order, Product, User }} = require('../db')
 module.exports = router
 
 router.get('/:id', async (req, res, next) => {
@@ -41,6 +41,28 @@ router.get('/:id', async (req, res, next) => {
     }
   })
 
-
-
   
+router.put('/delete', async(req,res,next)=>{
+  try{
+    const singleOrder = await Order.findOne({
+      where:{
+          userId:req.body.id,
+          isOpen:true
+      }
+  })
+  const currentProducts = singleOrder.products;
+  const productArray = (currentProducts.map(product => {
+        return JSON.parse(product);
+  })).filter(product => product.name !== req.body.orderName)
+  
+  singleOrder.products = productArray.map(product => {
+    return JSON.stringify(product);
+  })
+   await singleOrder.save();
+  
+      res.sendStatus(201)
+  }
+  catch(error){
+      next(error)
+  }
+})

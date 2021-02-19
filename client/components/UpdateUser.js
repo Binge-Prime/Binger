@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updateUser } from "../redux/singleUser";
+import { updateUser } from "../store/singleUser";
 
 export class UpdateUser extends React.Component {
 	constructor(props) {

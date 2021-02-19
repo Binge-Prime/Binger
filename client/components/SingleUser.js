@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchUser } from "../redux/singleUser";
+import { fetchUser } from "../store/singleUser";
 import UpdateUser from "./UpdateUser";
 
 export class SingleUser extends React.Component {

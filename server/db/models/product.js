@@ -13,7 +13,8 @@ const Product = db.define('product', {
     type: Sequelize.STRING
   },
   quantity: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    defaultValue : 1
   },
   price: {
     // prints out price in money format ex: user inputs 15.2  outputs 15.20
