@@ -1983,33 +1983,104 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class AdminProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+  constructor() {
+    super();
+    this.state = {
+      selectedProducts: []
+    };
+  }
+
   componentDidMount() {
     this.props.init();
     this.handleDestroy = this.handleDestroy.bind(this);
+    this.handleBulkDestroy = this.handleBulkDestroy.bind(this);
   }
 
   handleDestroy(e) {
     this.props.removeProduct(e.target.value);
   }
 
-  addInventoryOrder(e) {
-    console.log('added to inventory order');
+  handleBulkDestroy() {
+    const {
+      selectedProducts
+    } = this.state;
+    selectedProducts.forEach(product => {
+      this.props.removeProduct(product.id);
+    });
+    this.setState({
+      selectedProducts: []
+    });
+  }
+
+  updateSelection(e) {
+    const {
+      selectedProducts
+    } = this.state;
+
+    if (e.target.checked) {
+      const product = this.props.products.find(product => product.id === e.target.value * 1);
+      this.setState({
+        selectedProducts: [...selectedProducts, product]
+      });
+    } else {
+      this.setState({
+        selectedProducts: selectedProducts.filter(product => product.id !== e.target.value * 1)
+      });
+    }
+  }
+
+  handleClearSelection() {
+    document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+    this.setState({
+      selectedProducts: []
+    });
+  }
+
+  submitReorder(e) {
+    e.preventDefault();
+    const reorderQuantity = document.getElementById(`reorderQtyforProd${e.target.value}`).value;
+    const product = this.props.products.find(product => product.id === e.target.value * 1);
+    const newQuantity = product.quantity * 1 + reorderQuantity * 1;
+    this.props.editProduct({ ...product,
+      quantity: newQuantity
+    });
+    document.getElementById(`reorderQtyforProd${e.target.value}`).value = '';
   }
 
   render() {
     const {
       products
     } = this.props;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("table", {
-      id: "admin-products-table"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Product Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Category"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Price"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Quantity"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Average Rating"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Weekly Orders"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Actions"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tbody", null, products.map(product => {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      id: "admin-products-top"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      id: "adminprod-top-select"
+    }, "Selected Products: ", this.state.selectedProducts.length, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+      type: "button",
+      className: "button-delete",
+      onClick: () => this.handleBulkDestroy()
+    }, "Delete Selected"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+      type: "button",
+      className: "button-action",
+      onClick: () => this.handleClearSelection()
+    }, "Clear Selection"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("table", {
+      id: "adminprod-table"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Select"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Product Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Category"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Price"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Available Qty"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Reorder Qty"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Actions"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tbody", null, products.map(product => {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", {
         key: product.id,
-        id: "admin-products-row"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+        id: "adminprod-table-row"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        type: "checkbox",
+        value: product.id,
+        onChange: e => this.updateSelection(e)
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
         to: `/product/${product.id}`
-      }, product.name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, product.category), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, product.price), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, product.quantity), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, "product.avgRating"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, "product.orders"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
-        id: "admin-products-buttons"
+      }, product.name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, product.category), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, product.price), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, product.quantity), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        type: "number",
+        id: `reorderQtyforProd${product.id}`,
+        min: "0"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+        id: "adminprod-table-main-buttons"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
         to: `/products/update/${product.id}`
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
@@ -2024,8 +2095,8 @@ class AdminProducts extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
         type: "button",
         className: "button-action",
         value: product.id,
-        onClick: e => this.addInventoryOrder(e)
-      }, "Add Inventory")));
+        onClick: e => this.submitReorder(e)
+      }, "Reorder")));
     }))));
   }
 
@@ -2041,7 +2112,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     init: () => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchProducts)()),
-    removeProduct: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.deleteProduct)(id))
+    removeProduct: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.deleteProduct)(id)),
+    editProduct: product => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.updateProduct)(product))
   };
 };
 
@@ -2075,7 +2147,6 @@ class ProductForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     this.state = {
       name: product.id ? product.name : '',
       category: product.id ? product.category : '',
-      quantity: product.id ? product.quantity : 0,
       price: product.id ? product.price : 0,
       description: product.id ? product.description : '',
       ImgUrl: product.id ? product.ImgUrl : ''
@@ -2125,7 +2196,6 @@ class ProductForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     const {
       name,
       category,
-      quantity,
       price,
       description,
       ImgUrl
@@ -2152,13 +2222,6 @@ class ProductForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       name: "category",
       onChange: e => this.onChange(e),
       value: category
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
-      htmlFor: "quantity"
-    }, "Quantity: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-      type: "number",
-      name: "quantity",
-      onChange: e => this.onChange(e),
-      value: quantity
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
       htmlFor: "price"
     }, "Price: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {

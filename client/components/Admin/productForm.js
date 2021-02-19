@@ -8,7 +8,6 @@ class ProductForm extends Component {
         this.state = {
             name: product.id ? product.name : '',
             category: product.id ? product.category : '',
-            quantity: product.id ? product.quantity : 0,
             price: product.id ? product.price : 0,
             description: product.id ? product.description : '',
             ImgUrl: product.id ? product.ImgUrl : '',
@@ -41,7 +40,7 @@ class ProductForm extends Component {
         }
     }
     render() {
-        const { name, category, quantity, price, description, ImgUrl } = this.state;
+        const { name, category, price, description, ImgUrl } = this.state;
         const { product } = this.props;
         return (
             <div id='productForm-shell'>
@@ -57,9 +56,6 @@ class ProductForm extends Component {
                     
                     <label htmlFor='category'>Category: </label>
                     <input type='text' name='category' onChange={(e) => this.onChange(e)} value={category} />
-
-                    <label htmlFor='quantity'>Quantity: </label>
-                    <input type='number' name='quantity' onChange={(e) => this.onChange(e)} value={quantity} />
 
                     <label htmlFor='price'>Price: </label>
                     <input type='number' name='price' onChange={(e) => this.onChange(e)} value={price} />
