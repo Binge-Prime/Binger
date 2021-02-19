@@ -12,8 +12,8 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           {/* The navbar will show these links for logged in users */}
           <Link to='/home'>Home</Link>
           <Link to='/products'>Products</Link>
-          <Link to='/'>Cart (n/a)</Link>
-          <Link to='/'>Account (n/a)</Link>
+          <Link to='/cart'>Cart (n/a)</Link>
+          <Link to='/account'>Account (n/a)</Link>
           {/* admin tools link should only to become visible if logged in with admin rights */}
           <Link to='/admin'>Admin Tools</Link>
           <a href="#" onClick={handleClick}>
