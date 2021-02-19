@@ -2452,6 +2452,118 @@ const Signup = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapSignup, m
 
 /***/ }),
 
+/***/ "./client/components/Cart.js":
+/*!***********************************!*\
+  !*** ./client/components/Cart.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _store_products__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store/products */ "./client/store/products.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+ // Displays single product
+
+class Cart extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: this.props.price,
+      disableDec: true,
+      disableInc: false
+    };
+    this.increment = this.increment.bind(this);
+    this.decrement = this.decrement.bind(this);
+    this.handleDestroy = this.handleDestroy.bind(this);
+  }
+
+  handleDestroy(orderName) {
+    this.props.removeOrder(this.props.auth.id, orderName);
+    this.props.history.push('/products');
+  }
+
+  async decrement(price, id) {
+    const orderPrice = document.getElementById(id);
+    orderPrice.innerHTML = price;
+  }
+
+  async increment(price, id) {
+    // const User = (await axios.get(`/api/cart/${userId}`)).data
+    // const usersProductsArray = User.products.map(product => {
+    //     return JSON.parse(product);
+    // })
+    // console.log(usersProductsArray);
+    const orderPrice = document.getElementById(id);
+    orderPrice.innerHTML = price * 2;
+  }
+
+  async componentDidMount() {
+    // Fetch product data
+    const orderItems = await this.props.orderItems(this.props.auth.id);
+  }
+
+  render() {
+    // code broke without this line 
+    console.log(this.props);
+
+    if (!this.props.products.userOrders) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "No Items in cart...");
+    }
+
+    let userOrders = this.props.products.userOrders.products.map(order => {
+      return JSON.parse(order);
+    }); // const uniqueSet = new Set(userOrders);
+    // console.log('CART', uniqueSet);
+    //console.log(userOrders);
+
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, userOrders.map(order => {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "thumbnail",
+        src: order.ImgUrl
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, order.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+        id: order.id
+      }, `$ ${order.price}`), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "quantity-picker"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+        onClick: () => this.decrement(order.price, order.id)
+      }, "-"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+        onClick: () => this.increment(order.price, order.id)
+      }, "+")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+        type: "button",
+        className: "button-delete",
+        value: order.id,
+        onClick: () => this.handleDestroy(order.name)
+      }, "Delete"));
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+      type: "button"
+    }, "Purchase"));
+  }
+
+}
+
+const mapStateToProps = state => state;
+
+const mapDispatchToProps = dispatch => {
+  return {
+    orderItems: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchOrders)(id)),
+    removeOrder: (id, orderName) => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.deleteCartOrder)(id, orderName))
+  };
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, mapDispatchToProps)(Cart));
+
+/***/ }),
+
 /***/ "./client/components/SingleProduct.js":
 /*!********************************************!*\
   !*** ./client/components/SingleProduct.js ***!
@@ -2479,8 +2591,12 @@ class SingleProduct extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
 
   render() {
     const {
-      product
-    } = this.props; // Since render runs first, this allows componentDidMount to fetch data before trying to display
+      product,
+      userId,
+      addToCart
+    } = this.props; //console.log(this.props);
+    //this.props.product.id is the productId
+    // Since render runs first, this allows componentDidMount to fetch data before trying to display
     // ** This will be replaced by a loading thunk in the future, to display a loading graphic while **
     // ** we are acquiring the data                                                                  **
 
@@ -2494,23 +2610,171 @@ class SingleProduct extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       className: "thumbnail",
       src: `${window.location.origin}/${product.ImgUrl}`
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.name, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.price, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, " ", product.category, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
-      onClick: () => console.log('item added to cart')
+      onClick: () => addToCart(userId, this.props.product.id)
     }, "  add to Cart")));
   }
 
 }
 
 const mapStateToProps = state => ({
-  product: state.products.selectedProduct
+  product: state.products.selectedProduct,
+  userId: state.auth.id
 });
 
 const mapDispatchToProps = dispatch => {
   return {
-    init: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchProduct)(id))
+    init: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchProduct)(id)),
+    addToCart: (userId, productId) => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.addOrder)(userId, productId))
   };
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, mapDispatchToProps)(SingleProduct));
+
+/***/ }),
+
+/***/ "./client/components/SingleUser.js":
+/*!*****************************************!*\
+  !*** ./client/components/SingleUser.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "SingleUser": () => (/* binding */ SingleUser),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _store_singleUser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store/singleUser */ "./client/store/singleUser.js");
+/* harmony import */ var _UpdateUser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./UpdateUser */ "./client/components/UpdateUser.js");
+
+
+
+
+class SingleUser extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+  componentDidMount() {
+    this.props.init(this.props.userId);
+  }
+
+  render() {
+    const {
+      userId,
+      userName
+    } = props;
+
+    if (!userName) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Loading ..."));
+    } else {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Welcome, ", userName, "!"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_UpdateUser__WEBPACK_IMPORTED_MODULE_3__.default, {
+        id: userId
+      }));
+    }
+  }
+
+}
+
+const mapStateToProps = state => ({
+  userId: state.auth.id,
+  userName: state.auth.name
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    init: id => dispatch((0,_store_singleUser__WEBPACK_IMPORTED_MODULE_2__.fetchUser)(id))
+  };
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, mapDispatchToProps)(SingleUser));
+
+/***/ }),
+
+/***/ "./client/components/UpdateUser.js":
+/*!*****************************************!*\
+  !*** ./client/components/UpdateUser.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "UpdateUser": () => (/* binding */ UpdateUser),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _store_singleUser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store/singleUser */ "./client/store/singleUser.js");
+
+
+
+class UpdateUser extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      email: "",
+      password: ""
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(ev) {
+    this.setState({
+      [ev.target.name]: ev.target.value
+    });
+  }
+
+  handleSubmit() {
+    this.props.handleUpdateUser(this.props.id, this.state);
+    this.setState({
+      name: "",
+      email: "",
+      password: ""
+    });
+  }
+
+  render() {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Update My Profile"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+      htmlFor: "name"
+    }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      name: "name",
+      type: "text",
+      value: this.state.name,
+      onChange: this.handleChange
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+      htmlFor: "email"
+    }, "Email"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      name: "email",
+      type: "text",
+      value: this.state.email,
+      onChange: this.handleChange
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+      htmlFor: "password"
+    }, "Password"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      name: "password",
+      type: "text",
+      value: this.state.password,
+      onChange: this.handleChange
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+      type: "submit",
+      onClick: this.handleSubmit
+    }, "Save Changes"));
+  }
+
+}
+
+const mapState = () => {
+  return null;
+};
+
+const mapDispatch = dispatch => {
+  return {
+    handleUpdateUser: (id, data) => dispatch((0,_store_singleUser__WEBPACK_IMPORTED_MODULE_2__.updateUser)(id, data))
+  };
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapState, mapDispatch)(UpdateUser));
 
 /***/ }),
 
@@ -2571,7 +2835,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "AllProducts": () => (/* reexport safe */ _AllProducts__WEBPACK_IMPORTED_MODULE_4__.default),
 /* harmony export */   "SingleProduct": () => (/* reexport safe */ _SingleProduct__WEBPACK_IMPORTED_MODULE_5__.default),
 /* harmony export */   "ProductForm": () => (/* reexport safe */ _components_Admin_ProductForm__WEBPACK_IMPORTED_MODULE_6__.default),
-/* harmony export */   "AdminProducts": () => (/* reexport safe */ _components_Admin_AdminProducts__WEBPACK_IMPORTED_MODULE_7__.default)
+/* harmony export */   "AdminProducts": () => (/* reexport safe */ _components_Admin_AdminProducts__WEBPACK_IMPORTED_MODULE_7__.default),
+/* harmony export */   "SingleUser": () => (/* reexport safe */ _SingleUser__WEBPACK_IMPORTED_MODULE_8__.default),
+/* harmony export */   "Cart": () => (/* reexport safe */ _Cart__WEBPACK_IMPORTED_MODULE_9__.default)
 /* harmony export */ });
 /* harmony import */ var _navbar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./navbar */ "./client/components/navbar.js");
 /* harmony import */ var _home__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home */ "./client/components/home.js");
@@ -2581,11 +2847,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SingleProduct__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SingleProduct */ "./client/components/SingleProduct.js");
 /* harmony import */ var _components_Admin_ProductForm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/Admin/ProductForm */ "./client/components/Admin/ProductForm.js");
 /* harmony import */ var _components_Admin_AdminProducts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/Admin/AdminProducts */ "./client/components/Admin/AdminProducts.js");
+/* harmony import */ var _SingleUser__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./SingleUser */ "./client/components/SingleUser.js");
+/* harmony import */ var _Cart__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Cart */ "./client/components/Cart.js");
 /**
  * `components/index.js` exists simply as a 'central export' for our components.
  * This way, we can import all of our components from the same place, rather than
  * having to figure out which file they belong to!
  */
+
+
 
 
 
@@ -2625,9 +2895,9 @@ const Navbar = ({
 }, "Home"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
   to: "/products"
 }, "Products"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
-  to: "/"
+  to: "/cart"
 }, "Cart (n/a)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
-  to: "/"
+  to: "/account"
 }, "Account (n/a)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
   to: "/admin"
 }, "Admin Tools"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
@@ -2762,6 +3032,9 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       path: "/products",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.AllProducts
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
+      path: "/cart",
+      component: _components__WEBPACK_IMPORTED_MODULE_2__.Cart
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/product/:id",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.SingleProduct
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
@@ -2770,6 +3043,9 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
       path: "/products/update/:id",
       component: _components__WEBPACK_IMPORTED_MODULE_2__.ProductForm
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
+      path: "/account",
+      component: _components__WEBPACK_IMPORTED_MODULE_2__.SingleUser
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Redirect, {
       to: "/home"
     })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Route, {
@@ -2968,11 +3244,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "_createProduct": () => (/* binding */ _createProduct),
 /* harmony export */   "_updateProduct": () => (/* binding */ _updateProduct),
 /* harmony export */   "_deleteProduct": () => (/* binding */ _deleteProduct),
+/* harmony export */   "_setCartItems": () => (/* binding */ _setCartItems),
+/* harmony export */   "_addToOrders": () => (/* binding */ _addToOrders),
+/* harmony export */   "_deleteCartOrder": () => (/* binding */ _deleteCartOrder),
+/* harmony export */   "fetchOrders": () => (/* binding */ fetchOrders),
+/* harmony export */   "addOrder": () => (/* binding */ addOrder),
 /* harmony export */   "fetchProducts": () => (/* binding */ fetchProducts),
 /* harmony export */   "fetchProduct": () => (/* binding */ fetchProduct),
 /* harmony export */   "createProduct": () => (/* binding */ createProduct),
 /* harmony export */   "updateProduct": () => (/* binding */ updateProduct),
 /* harmony export */   "deleteProduct": () => (/* binding */ deleteProduct),
+/* harmony export */   "deleteCartOrder": () => (/* binding */ deleteCartOrder),
 /* harmony export */   "default": () => (/* binding */ productReducer)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -2988,7 +3270,10 @@ const SET_PRODUCTS = 'SET_PRODUCTS';
 const SET_SELECTED_PRODUCT = 'SET_SELECTED_PRODUCT';
 const CREATE_PRODUCT = 'CREATE_PRODUCT';
 const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
-const DELETE_PRODUCT = 'DELETE_PRODUCT'; // ACTIONS (Q: do we need to export these?)
+const DELETE_PRODUCT = 'DELETE_PRODUCT';
+const FETCH_ORDERS = "FETCH_ORDERS";
+const ADD_TO_ORDERS = "ADD_TO_ORDERS";
+const DELETE_ORDER = "DELETE_ORDER"; // ACTIONS (Q: do we need to export these?)
 
 const setProducts = products => ({
   type: SET_PRODUCTS,
@@ -3009,8 +3294,39 @@ const _updateProduct = product => ({
 const _deleteProduct = product => ({
   type: DELETE_PRODUCT,
   product
+});
+const _setCartItems = userOrders => ({
+  type: FETCH_ORDERS,
+  userOrders
+});
+const _addToOrders = order => ({
+  type: ADD_TO_ORDERS,
+  order
+});
+const _deleteCartOrder = orderToDelete => ({
+  type: DELETE_ORDER,
+  orderToDelete
 }); // THUNKS
-// fetches all product data
+//grab all the orders that belong to specific user
+
+const fetchOrders = userId => {
+  return async dispatch => {
+    const userOrders = (await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/api/cart/${userId}`)).data; //dispatch the users orders
+
+    dispatch(_setCartItems(userOrders));
+  };
+}; // grabs the userId and current productId from our singleProduct components onClick 
+
+const addOrder = (userId, productId) => {
+  return async dispatch => {
+    //console.log('WE HERE USERID and PRODUCTID', userId, productId);
+    //pass in productId so we can use it to find product in our backend/routes
+    const order = (await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/api/cart/${userId}`, {
+      productId
+    })).data;
+    dispatch(_addToOrders(order));
+  };
+}; // fetches all product data
 
 const fetchProducts = () => {
   return async dispatch => {
@@ -3045,6 +3361,16 @@ const deleteProduct = id => {
     const deletedProduct = (await axios__WEBPACK_IMPORTED_MODULE_0___default().delete(`/api/products/delete/${id}`)).data;
     dispatch(_deleteProduct(deletedProduct));
   };
+};
+const deleteCartOrder = (id, orderName) => {
+  return async dispatch => {
+    console.log(id);
+    const deleteOrder = (await axios__WEBPACK_IMPORTED_MODULE_0___default().put('/api/cart/delete', {
+      id,
+      orderName
+    })).data;
+    dispatch(_deleteCartOrder(deleteOrder));
+  };
 }; // REDUCER
 
 function productReducer(state = initialState, action) {
@@ -3072,6 +3398,75 @@ function productReducer(state = initialState, action) {
     case DELETE_PRODUCT:
       return { ...state,
         products: state.products.filter(product => product.id !== action.product.id)
+      };
+
+    case FETCH_ORDERS:
+      return { ...state,
+        userOrders: action.userOrders
+      };
+    // splats out the state and sends users order      
+
+    case ADD_TO_ORDERS:
+      return { ...state,
+        order: action.order
+      };
+
+    case DELETE_ORDER:
+      return { ...state,
+        order: action.orderToDelete
+      };
+
+    default:
+      return state;
+  }
+}
+
+/***/ }),
+
+/***/ "./client/store/singleUser.js":
+/*!************************************!*\
+  !*** ./client/store/singleUser.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "setUser": () => (/* binding */ setUser),
+/* harmony export */   "fetchUser": () => (/* binding */ fetchUser),
+/* harmony export */   "updateUser": () => (/* binding */ updateUser),
+/* harmony export */   "default": () => (/* binding */ usertReducer)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+const initialState = {};
+const setUser = user => {
+  return {
+    type: "SET_USER",
+    user
+  };
+};
+const fetchUser = id => {
+  return async dispatch => {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/api/users/${id}`);
+    dispatch(setUser(response.data));
+  };
+};
+const updateUser = (id, user) => {
+  return async dispatch => {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().put(`/api/users/update/${id}`, user);
+    dispatch(updateUser(JSON.parse(response.config.data)));
+  };
+};
+function usertReducer(state = initialState, action) {
+  switch (action.type) {
+    case "SET_USER":
+      return action.user;
+
+    case "UPDATE_USER":
+      return { ...state,
+        ...action.user
       };
 
     default:
