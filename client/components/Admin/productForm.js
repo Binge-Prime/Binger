@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchProduct, createProduct, updateProduct, deleteProduct } from '../../store/products';
+import { createProduct, updateProduct, deleteProduct } from '../../store/products';
 
-class productForm extends Component {
+class ProductForm extends Component {
     constructor({ product }) {
         super();
         this.state = {
@@ -25,7 +25,7 @@ class productForm extends Component {
     handleDestroy() {
         const { product, history } = this.props;
         this.props.removeProduct(product.id);
-        history.push('/products');
+        history.push('/admin/products');
     }
     handleSubmit(e) {
         // need to add error message that all fields need to be filled out before submitting (i.e. should not be bale to submit incomplete form)
@@ -34,10 +34,10 @@ class productForm extends Component {
         const { product, history } = this.props;
         if (product.id) {
             this.props.editProduct({ ...this.state, id: product.id });
-            history.push('/products');
+            history.push('/admin/products');
         } else {
             this.props.addProduct({ ...this.state });
-            history.push('/products')
+            history.push('/admin/products')
         }
     }
     render() {
@@ -72,10 +72,10 @@ class productForm extends Component {
 
                     <div id='productForm-buttons'>
                         {/* <input type='reset'></input> // Q: Do we want to add a reset button that returns the form to prevProps? Alternatively, we can render 2 forms, one with current data (not editable), and one with new data */}
-                        <button type='submit' className='button-submit'>{ product.id ? 'Update ' : 'Create ' }{name}</button>
+                        <button type='submit' className='button-submit'>{ product.id ? 'Update ' : 'Create ' }</button>
 
                         { !!product.id &&
-                            <button type='button' className='button-delete' onClick={() => this.handleDestroy()}>{`Delete ${product.name}`}</button>
+                            <button type='button' className='button-delete' onClick={() => this.handleDestroy()}>{`Delete`}</button>
                         }
                     </div>
                 </form>
@@ -98,4 +98,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(productForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductForm);

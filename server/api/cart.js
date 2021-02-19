@@ -15,7 +15,8 @@ router.get('/:id', async (req, res, next) => {
     } catch (err) {
       next(err)
     }
-  })
+})
+  
   router.post('/:id', async (req, res, next) => {
     try {
       const singleOrder = await Order.findOne({
