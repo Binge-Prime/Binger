@@ -12,7 +12,7 @@ const DELETE_PRODUCT = 'DELETE_PRODUCT'
 const FETCH_ORDERS = "FETCH_ORDERS"
 const ADD_TO_ORDERS = "ADD_TO_ORDERS"
 const DELETE_ORDER = "DELETE_ORDER"
-
+const EMPTY_CART = "EMPTY_CART"
 // ACTIONS (Q: do we need to export these?)
 export const setProducts = (products) => ({ type: SET_PRODUCTS, products });
 export const setSelectedProduct = (selectedProduct) => ({ type: SET_SELECTED_PRODUCT, selectedProduct });
@@ -22,6 +22,7 @@ export const _deleteProduct = (product) => ({ type: DELETE_PRODUCT, product });
 export const _setCartItems = (userOrders) => ({ type: FETCH_ORDERS, userOrders });
 export const _addToOrders = (order) => ({ type: ADD_TO_ORDERS, order});
 export const _deleteCartOrder = (orderToDelete) => ({ type: DELETE_ORDER, orderToDelete})
+export const _emptyCart = () => ({ type: EMPTY_CART })
 // THUNKS
 //grab all the orders that belong to specific user
 export const fetchOrders = (userId) => {
@@ -71,6 +72,14 @@ export const updateProduct = (product) => {
     }
 }
 
+export const emptyCart = (id) => {
+    return async (dispatch) => {
+        console.log("ID FROM THUNK", id);
+        const order = (await axios.put(`/api/cart/${id}`)).data
+        dispatch(_emptyCart)
+    }
+}
+
 // delete existing single product
 export const deleteProduct = (id) => {
     return async (dispatch) => {
@@ -106,6 +115,8 @@ export default function productReducer (state=initialState, action) {
             return { ...state, order: action.order }
         case DELETE_ORDER:   
         return {...state, order: action.orderToDelete } 
+        case EMPTY_CART:
+            return state 
         default:
             return state
     }

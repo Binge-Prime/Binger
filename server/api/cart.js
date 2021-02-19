@@ -26,7 +26,7 @@ router.get('/:id', async (req, res, next) => {
           }
       })
 
-      console.log('SINGLE ORDER', singleOrder);
+      // console.log('SINGLE ORDER', singleOrder);
       if(!singleOrder){
         await Order.create({
             userId: req.params.id,
@@ -58,6 +58,24 @@ router.get('/:id', async (req, res, next) => {
     }
   })
 
+router.put('/:id', async (req, res, next) => {
+  try{
+    const order = await Order.findOne({
+      where:{
+          userId:req.params.id,
+          isOpen:true
+      }
+  })
+
+    order.products = [];
+    order.save();
+    res.send(order).status(201);
+
+  }
+  catch(ex){
+    next(ex)
+  }
+})
   
 router.put('/delete', async(req,res,next)=>{
   try{

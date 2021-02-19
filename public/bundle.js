@@ -2485,6 +2485,7 @@ class Cart extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
     this.handleDestroy = this.handleDestroy.bind(this);
+    this.handlePurchase = this.handlePurchase.bind(this);
   }
 
   handleDestroy(orderName) {
@@ -2492,9 +2493,14 @@ class Cart extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     this.props.history.push('/products');
   }
 
+  handlePurchase(id) {
+    this.props.hitPurchase(id);
+    this.props.history.push('/products');
+  }
+
   async decrement(price, id) {
     const orderPrice = document.getElementById(id);
-    orderPrice.innerHTML = price;
+    orderPrice.innerHTML = `$ ${price}`;
   }
 
   async increment(price, id) {
@@ -2504,7 +2510,7 @@ class Cart extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     // })
     // console.log(usersProductsArray);
     const orderPrice = document.getElementById(id);
-    orderPrice.innerHTML = price * 2;
+    orderPrice.innerHTML = `$ ${price * 2}`;
   }
 
   async componentDidMount() {
@@ -2545,6 +2551,7 @@ class Cart extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
         onClick: () => this.handleDestroy(order.name)
       }, "Delete"));
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+      onClick: () => this.handlePurchase(this.props.auth.id),
       type: "button"
     }, "Purchase"));
   }
@@ -2556,7 +2563,8 @@ const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => {
   return {
     orderItems: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.fetchOrders)(id)),
-    removeOrder: (id, orderName) => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.deleteCartOrder)(id, orderName))
+    removeOrder: (id, orderName) => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.deleteCartOrder)(id, orderName)),
+    hitPurchase: id => dispatch((0,_store_products__WEBPACK_IMPORTED_MODULE_2__.emptyCart)(id))
   };
 };
 
@@ -3247,12 +3255,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "_setCartItems": () => (/* binding */ _setCartItems),
 /* harmony export */   "_addToOrders": () => (/* binding */ _addToOrders),
 /* harmony export */   "_deleteCartOrder": () => (/* binding */ _deleteCartOrder),
+/* harmony export */   "_emptyCart": () => (/* binding */ _emptyCart),
 /* harmony export */   "fetchOrders": () => (/* binding */ fetchOrders),
 /* harmony export */   "addOrder": () => (/* binding */ addOrder),
 /* harmony export */   "fetchProducts": () => (/* binding */ fetchProducts),
 /* harmony export */   "fetchProduct": () => (/* binding */ fetchProduct),
 /* harmony export */   "createProduct": () => (/* binding */ createProduct),
 /* harmony export */   "updateProduct": () => (/* binding */ updateProduct),
+/* harmony export */   "emptyCart": () => (/* binding */ emptyCart),
 /* harmony export */   "deleteProduct": () => (/* binding */ deleteProduct),
 /* harmony export */   "deleteCartOrder": () => (/* binding */ deleteCartOrder),
 /* harmony export */   "default": () => (/* binding */ productReducer)
@@ -3273,7 +3283,8 @@ const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 const DELETE_PRODUCT = 'DELETE_PRODUCT';
 const FETCH_ORDERS = "FETCH_ORDERS";
 const ADD_TO_ORDERS = "ADD_TO_ORDERS";
-const DELETE_ORDER = "DELETE_ORDER"; // ACTIONS (Q: do we need to export these?)
+const DELETE_ORDER = "DELETE_ORDER";
+const EMPTY_CART = "EMPTY_CART"; // ACTIONS (Q: do we need to export these?)
 
 const setProducts = products => ({
   type: SET_PRODUCTS,
@@ -3306,6 +3317,9 @@ const _addToOrders = order => ({
 const _deleteCartOrder = orderToDelete => ({
   type: DELETE_ORDER,
   orderToDelete
+});
+const _emptyCart = () => ({
+  type: EMPTY_CART
 }); // THUNKS
 //grab all the orders that belong to specific user
 
@@ -3353,6 +3367,13 @@ const updateProduct = product => {
   return async dispatch => {
     const updatedProduct = (await axios__WEBPACK_IMPORTED_MODULE_0___default().put(`/api/products/update/${product.id}`, product)).data;
     dispatch(_updateProduct(updatedProduct));
+  };
+};
+const emptyCart = id => {
+  return async dispatch => {
+    console.log("ID FROM THUNK", id);
+    const order = (await axios__WEBPACK_IMPORTED_MODULE_0___default().put(`/api/cart/${id}`)).data;
+    dispatch(_emptyCart);
   };
 }; // delete existing single product
 
@@ -3415,6 +3436,9 @@ function productReducer(state = initialState, action) {
       return { ...state,
         order: action.orderToDelete
       };
+
+    case EMPTY_CART:
+      return state;
 
     default:
       return state;
