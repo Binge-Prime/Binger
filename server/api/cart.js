@@ -19,12 +19,28 @@ router.get('/:id', async (req, res, next) => {
   
   router.post('/:id', async (req, res, next) => {
     try {
-      const singleOrder = await Order.findOne({
+      let singleOrder = await Order.findOne({
           where:{
               userId:req.params.id,
               isOpen:true
           }
       })
+
+      console.log('SINGLE ORDER', singleOrder);
+      if(!singleOrder){
+        await Order.create({
+            userId: req.params.id,
+            isOpen: true,
+            products: []
+        })
+
+        singleOrder = await Order.findOne({
+          where:{
+              userId:req.params.id,
+              isOpen:true
+          }
+      })
+      }
       // finding product by their id, passed in from THUNK in req.body 
       const product = await Product.findByPk(req.body.productId)
       //Stringifying product to follow format of stringified product array in our ORDER model
