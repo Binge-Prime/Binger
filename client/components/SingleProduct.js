@@ -28,10 +28,12 @@ class SingleProduct extends Component {
                 <ul id='single-product'>
                 {/* window.location.origin covers the edge case of image pathing breaking for certain images */}
                 <img className ='thumbnail' src={ `${ window.location.origin }/${ product.ImgUrl }` }/>
+                    <div>  
                     <li> {product.name} </li>
                     <li> {product.price} </li>
                     <li> {product.category} </li>
                    <button onClick = { () => addToCart(userId, this.props.product.id)} >  Add to Cart</button>
+                   </div>
                 </ul>
             </div>
         )
