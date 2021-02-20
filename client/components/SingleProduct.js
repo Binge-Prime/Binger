@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Component } from 'react';
-import { fetchProduct, addOrder } from '../store/products'
+import { fetchProduct } from '../store/products'
+import { addOrder } from '../store/cart'
 
 // Displays single product
 class SingleProduct extends Component {

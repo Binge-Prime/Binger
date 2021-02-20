@@ -9,7 +9,7 @@ export const Home = props => {
 
   return (
     <div>
-      <h3>Welcome, { name }!</h3>
+      <h3>Welcome, { name }</h3>
     </div>
   )
 }
@@ -19,7 +19,7 @@ export const Home = props => {
  */
 const mapState = state => {
   return {
-    name: state.auth.name
+    name: state.auth.name ? state.auth.name : 'Guest User'
   }
 }
 
