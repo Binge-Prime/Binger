@@ -1,103 +1,90 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Component } from 'react';
-import { fetchOrders, deleteCartOrder, emptyCart } from '../store/products'
-import axios from 'axios'
+import { fetchCart, deleteOrder, emptyCart } from '../store/cart'
 
-// Displays single product
+// Displays user's cart
 class Cart extends Component {
-    constructor(props) {
-        super(props);
-    
-        this.state = {
-            value: this.props.price,
-            disableDec: true, 
-            disableInc: false
-        }
+    componentDidMount () {
+        this.props.init(this.props.userId); 
 
-        this.increment = this.increment.bind(this);
-        this.decrement = this.decrement.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.handleDestroy = this.handleDestroy.bind(this);
-        this.handlePurchase = this.handlePurchase.bind(this);
-        }
-
-         handleDestroy(orderName) {
-            this.props.removeOrder(this.props.auth.id, orderName);
-            this.props.history.push('/products');            
-        }
-        handlePurchase(id) {
-            this.props.hitPurchase(id);
-            this.props.history.push('/products');
-        }
-        async decrement(price, id){
-           
-            const orderPrice = document.getElementById(id);
-            orderPrice.innerHTML = `$ ${price}`;
-        }
-        async increment(price, id){
-            // const User = (await axios.get(`/api/cart/${userId}`)).data
-            // const usersProductsArray = User.products.map(product => {
-            //     return JSON.parse(product);
-            // })
-            // console.log(usersProductsArray);
-           
-            const orderPrice = document.getElementById(id);
-            orderPrice.innerHTML = `$ ${price*2}` ;
-           
-      }
-
-    async componentDidMount () {
-        // Fetch product data
-        
-        const orderItems = await this.props.orderItems(this.props.auth.id); 
-        console.log(this.props);
-        
+        this.handlePurchase = this.handlePurchase.bind(this);       
     }
+
+    handleDestroy(orderId) {
+        this.props.deleteOrder(orderId);
+        this.props.history.go(0)           
+    }
+
+    handlePurchase(id) {
+        this.props.emptyCart(id);
+        this.props.history.go(0)
+    }
+
+    handleChange(id, price, quantity) {
+        const orderPrice = document.getElementById(id);
+        orderPrice.innerHTML = `${ price * quantity }`
+    }
+
     render () {
-        // code broke without this line 
-        console.log(this.props);
-        if(!this.props.products.userOrders){
+        const { orders } = this.props;
+
+        if (!orders) {
             return (
-                <p>No Items in cart...</p>
+                <div>
+                    <h1> Your cart is empty! Go check out our awesome products under the 'Products' tab :)</h1>
+                </div>
             )
         }
-        let userOrders = (this.props.products.userOrders.products).map(order => {
-            return JSON.parse(order)
-        });
-        // const uniqueSet = new Set(userOrders);
-        // console.log('CART', uniqueSet);
-        //console.log(userOrders);
-
+        
         return (
             <div>
-                {userOrders.map((order) => {
-                    return (
-                        <tr >
-                            <img className='thumbnail' src={order.ImgUrl}/>
-                            <td>{order.name}</td>
-                            <td id={order.id}>{`$ ${order.price}`}</td>
-                            <span className="quantity-picker">
-                            <button  onClick={()=>this.decrement(order.price, order.id)}>-</button>
-                            <button  onClick={()=>this.increment(order.price, order.id)}>+</button>
-                            </span>
-                            <button type='button' className='button-delete' value={order.id} onClick={() => this.handleDestroy(order.name)}>Delete</button>
-                        </tr>
-                    )
-                })}
-                <button onClick={()=>this.handlePurchase(this.props.auth.id)}type='button' >Purchase</button>
+                <table>
+                    <tbody>
+                        { orders.map( ( order ) => {
+                            let product = order.product;
+                            const options = [...Array(product.quantity).keys()].map(num => num + 1)
+                            return (
+                                <tr key={ 'product' + product.id }>
+                                    <td><img className='thumbnail' src={ product.ImgUrl }/></td>
+                                    <td>{ product.name }</td>
+                                    <td id={ product.id }>{`$ ${ product.price }`}</td>
+                                    <td>
+                                        <select onChange={() => this.handleChange(product.id, product.price, this.value)}>
+                                            { options.map(( num ) => {
+                                                return (
+                                                    <option key={ 'option' + num }>{ num }</option>
+                                                )
+                                            })}
+                                        </select>
+                                    </td>
+                                    <td><button type='button' className='button-delete' onClick={() => this.handleDestroy(order.id)}>Delete</button></td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
+                <button onClick={()=>this.handlePurchase(this.props.userId)}type='button' >Purchase</button>
             </div>
         )
  
     }
 
 }
-const mapStateToProps = (state) => state
+const mapStateToProps = (state) => {
+    return {
+        orders: state.cart.orders,
+        userId: state.auth.id
+    }
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        orderItems: (id) => dispatch(fetchOrders(id)),
-        removeOrder: (id, orderName) => dispatch(deleteCartOrder(id, orderName)),
-        hitPurchase: (id) => dispatch(emptyCart(id)) 
+        init: (id) => dispatch(fetchCart(id)),
+        deleteOrder: (id, productId) => dispatch(deleteOrder(id, productId)),
+        emptyCart: (id) => dispatch(emptyCart(id))
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

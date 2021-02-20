@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Component } from 'react';
-import { fetchProduct, addOrder } from '../store/products'
+import { fetchProduct } from '../store/products'
+import { addOrder } from '../store/cart'
 
 // Displays single product
 class SingleProduct extends Component {
@@ -30,8 +31,7 @@ class SingleProduct extends Component {
                     <li> {product.name} </li>
                     <li> {product.price} </li>
                     <li> {product.category} </li>
-                    {/* console.log to be replaced with cart thunk */}
-                   <button onClick = { () => addToCart(userId, this.props.product.id)} >  add to Cart</button>
+                   <button onClick = { () => addToCart(userId, this.props.product.id)} >  Add to Cart</button>
                 </ul>
             </div>
         )

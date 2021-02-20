@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchProducts, deleteProduct } from '../store/products'
+import { addOrder } from '../store/cart'
 
 
 class AllProducts extends Component {
@@ -14,7 +15,7 @@ class AllProducts extends Component {
         this.props.removeProduct(e.target.value);
     }
     render () {
-        const { products, isLoggedIn } = this.props;
+        const { products, isLoggedIn, userId, addToCart } = this.props;
         return (
             <div>
                 <ul id='all-products-list'>
@@ -33,7 +34,7 @@ class AllProducts extends Component {
                                 </Link>
                                 { isLoggedIn ? (
                                     <div id='product-tile-buttons'>
-                                        <button type='button' className='button-enter' onClick={() => console.log('item added to cart')} >Add to Cart</button>
+                                        <button type='button' className='button-enter' onClick={() => addToCart(userId, product.id)} >Add to Cart</button>
                                     </div>
                                 ) : (<br/>)
                                 }
@@ -49,14 +50,16 @@ class AllProducts extends Component {
 const mapStateToProps = (state) => {
     return {
         products: state.products.products,
-        isLoggedIn: !!state.auth.id
+        isLoggedIn: !!state.auth.id,
+        userId: state.auth.id
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         init: () => dispatch(fetchProducts()),
-        removeProduct: (id) => dispatch(deleteProduct(id))
+        removeProduct: (id) => dispatch(deleteProduct(id)),
+        addToCart: (userId, productId) => dispatch(addOrder(userId, productId))
     };
 };
 

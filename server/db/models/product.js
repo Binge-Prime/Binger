@@ -36,7 +36,8 @@ const Product = db.define('product', {
     type: Sequelize.INTEGER
   }, 
   isAddedToCart:{
-      type: Sequelize.BOOLEAN
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
   }
 })
 module.exports = Product;
