@@ -8,10 +8,10 @@ const AdminTools = ({ isLoggedIn }) => (
         { isLoggedIn ? // needs to check for Admin role, nt just logged in user //
             (
                 <div id='adminLinks'>
-                    <Link to='/admin/products'>Edit Products</Link>
+                    <Link to='/admin-products'>Edit Products</Link>
                     <Link to='/products/create'>Create Product</Link>
-                    <Link to='/adminAllUsers'>Edit Users (N/a)</Link>
-                    <Link to='/users/create'>Create User (N/a)</Link>
+                    <Link to='/admin-users'>Edit Users</Link>
+                    <Link to='/users/create'>Create User</Link>
                 </div>
             ) : (
                 <p>Access Not Authorized</p>)

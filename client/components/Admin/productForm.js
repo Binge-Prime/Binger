@@ -24,7 +24,7 @@ class ProductForm extends Component {
     handleDestroy() {
         const { product, history } = this.props;
         this.props.removeProduct(product.id);
-        history.push('/admin/products');
+        history.push('/admin-products');
     }
     handleSubmit(e) {
         // need to add error message that all fields need to be filled out before submitting (i.e. should not be bale to submit incomplete form)
@@ -33,10 +33,10 @@ class ProductForm extends Component {
         const { product, history } = this.props;
         if (product.id) {
             this.props.editProduct({ ...this.state, id: product.id });
-            history.push('/admin/products');
+            history.push('/admin-products');
         } else {
             this.props.addProduct({ ...this.state });
-            history.push('/admin/products')
+            history.push('/admin-products')
         }
     }
     render() {

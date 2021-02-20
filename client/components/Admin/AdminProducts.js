@@ -10,11 +10,11 @@ class AdminProducts extends Component {
         this.state = {
             selectedProducts: [],
         }
+        this.handleDestroy = this.handleDestroy.bind(this);
+        this.handleBulkDestroy = this.handleBulkDestroy.bind(this);
     }    
     componentDidMount() {
         this.props.init();
-        this.handleDestroy = this.handleDestroy.bind(this);
-        this.handleBulkDestroy = this.handleBulkDestroy.bind(this);
     }
     handleDestroy(e) {
         this.props.removeProduct(e.target.value);
@@ -59,16 +59,15 @@ class AdminProducts extends Component {
         const { products } = this.props;
         return (
             <div>
-                {/* top section menu */}
-                <div id='admin-products-top'>
-                    <div id='adminprod-top-select'>
+                <div id='admin-models-top'>
+                    <div id='admin-models-top-select'>
                         Selected Products: {this.state.selectedProducts.length}
                         <button type='button' className='button-delete' onClick={() => this.handleBulkDestroy()}>Delete Selected</button>
                         <button type='button' className='button-action' onClick={() => this.handleClearSelection()}>Clear Selection</button>
                     </div>
                 </div>
-                {/* all products table */}
-                <table id='adminprod-table'>
+
+                <table id='admin-models-table'>
                     <thead>
                         <tr>
                             <th>Select</th>
@@ -80,17 +79,18 @@ class AdminProducts extends Component {
                             <th>Actions</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         { products.map((product) => {
                             return (
-                                <tr key={ product.id } id='adminprod-table-row'>
+                                <tr key={ product.id } id='admin-models-row'>
                                     <td><input type="checkbox" value={product.id} onChange={(e) => this.updateSelection(e)}></input></td>
                                     <td><Link to={`/product/${product.id}`}>{product.name}</Link></td>
                                     <td>{ product.category }</td>
                                     <td>{ product.price }</td>
                                     <td>{product.quantity}</td>
                                     <td><input type='number' id={`reorderQtyforProd${product.id}`} min='0'/></td>
-                                    <td id='adminprod-table-main-buttons'>                                       
+                                    <td id='admin-models-buttons'>                                       
                                         <Link to={`/products/update/${product.id}`}>
                                             <button type='button' className='button-action'>Edit</button>
                                         </Link>

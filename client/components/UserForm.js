@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { deleteUser, updateUser } from "../store/users";
+import { getUser, deleteUser, updateUser } from "../store/users";
 
 export class UserForm extends React.Component {
 	constructor({ user }) {
@@ -14,6 +14,9 @@ export class UserForm extends React.Component {
 		this.onChange = this.onChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleDestroy = this.handleDestroy.bind(this);
+	}
+	componentDidMount() {
+		this.props.init(this.props.match.params.id);
 	}
 	onChange(e) {
 		this.setState({
@@ -96,8 +99,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatch = (dispatch) => {
 	return {
+		init: (id) => dispatch(getUser(id)),
 		updateUser: (user) => dispatch(updateUser(user)),
-		deleteUser: (id) => dispatch(updateUser(id)),
+		deleteUser: (id) => dispatch(deleteUser(id)),
 	};
 };
 

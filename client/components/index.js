@@ -9,6 +9,7 @@ export { Login, Signup } from './AuthForm'
 export { default as AdminTools } from './AdminTools'
 //--
 export { default as AdminProducts } from '../components/Admin/AdminProducts'
+export { default as AdminUsers } from '../components/Admin/AdminUsers'
 export { default as ProductForm } from '../components/Admin/ProductForm'
 //--
 export { default as AllProducts } from './AllProducts'
