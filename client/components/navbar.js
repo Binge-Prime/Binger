@@ -3,17 +3,17 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
 
-const Navbar = ({handleClick, isLoggedIn}) => (
+const Navbar = ({handleClick, isLoggedIn, userId}) => (
   <div>
     <h1>Binger</h1>
     <nav>
       {isLoggedIn ? (
-        <div>
+        <div >
           {/* The navbar will show these links for logged in users */}
           <Link to='/home'>Home</Link>
           <Link to='/products'>Products</Link>
           <Link to='/cart'>Cart</Link>
-          <Link to='/account'>Account (n/a)</Link>
+          <Link to={`/account/${ userId }`}>Account</Link>
           {/* admin tools link should only to become visible if logged in with admin rights */}
           <Link to='/admin'>Admin Tools</Link>
           <a href="#" onClick={handleClick}>
@@ -33,12 +33,13 @@ const Navbar = ({handleClick, isLoggedIn}) => (
   </div>
 )
 
-/**
+/** 
  * CONTAINER
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.auth.id
+    isLoggedIn: !!state.auth.id,
+    userId: state.auth.id
   }
 }
 
