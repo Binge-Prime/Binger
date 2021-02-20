@@ -8,6 +8,7 @@
  */
 try {
   require('../secrets')
+  process.env.JWT = JWT;
 }
 catch(ex){
   console.log(ex.message);
