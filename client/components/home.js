@@ -19,7 +19,7 @@ export const Home = props => {
  */
 const mapState = state => {
   return {
-    name: state.auth.name ? state.auth.name : 'Guest User'
+    name: state.auth.firstName ? state.auth.firstName : 'Guest User'
   }
 }
 

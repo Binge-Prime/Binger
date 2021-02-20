@@ -2,10 +2,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-const AdminTools = ({ isLoggedIn }) => (
+const AdminTools = ({ isLoggedIn, isAdmin }) => (
     <div>
         <h2>Admin Tools</h2>
-        { isLoggedIn ? // needs to check for Admin role, nt just logged in user //
+        { isLoggedIn && isAdmin ? // needs to check for Admin role, nt just logged in user //
             (
                 <div id='adminLinks'>
                     <Link to='/admin-products'>Edit Products</Link>
@@ -19,8 +19,10 @@ const AdminTools = ({ isLoggedIn }) => (
 )
 
 const mapState = state => {
+    console.log(state)
     return {
-        isLoggedIn: !!state.auth.id
+        isLoggedIn: !!state.auth.id,
+        isAdmin: state.auth.isAdmin
     }
 }
 

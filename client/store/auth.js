@@ -35,6 +35,7 @@ export const authenticate = (email, password, method, name=null, githubId=null) 
     res = await axios.post(`/auth/${method}`, {email, password, name, githubId})
     storage().setItem(TOKEN, res.data.token)
     dispatch(me())
+    history.push('/admin-products')
   } catch (authError) {
     return dispatch(setAuth({error: authError}))
   }

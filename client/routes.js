@@ -13,7 +13,7 @@ class Routes extends Component {
     this.props.loadInitialData()
   }
   render() {
-    const { isLoggedIn } = this.props
+    const { isLoggedIn, isAdmin } = this.props
     return (
       <div>
         {isLoggedIn ? (
@@ -24,23 +24,25 @@ class Routes extends Component {
             <Route path='/cart' component={Cart} />
             <Route path='/account/:id' component={SingleUser} />
             <Route path='/users/update/:id' component={UserForm} />
-
-            <Route exact path='/admin' component={AdminTools} />
-            <Route path='/admin-products' component={AdminProducts} />
-            <Route path='/products/create' component={ProductForm} />
-            <Route path='/products/update/:id' component={ProductForm} />
-            <Route path='/admin-users' component={AdminUsers} />
-            <Route path='/users/create' component={UserForm} />
-
-            {/* <Redirect to="/home" /> */}
+            { isAdmin ? (
+              <Switch>
+                <Route exact path='/admin' component={AdminTools} />
+                <Route path='/admin-products' component={AdminProducts} />
+                <Route path='/products/create' component={ProductForm} />
+                <Route path='/products/update/:id' component={ProductForm} />
+                <Route path='/admin-users' component={AdminUsers} />
+                <Route path='/users/create' component={UserForm} />
+              </Switch>
+            ) : null }
+            <Redirect to="/products" />
           </Switch>
         ) : (
           <Switch>
             <Route path='/login' component={Login} />
             <Route path='/signup' component={Signup} />
-            <Route path='/home' component={Home} />
             <Route path='/products' component={AllProducts} />
             <Route path='/product/:id' component={SingleProduct} />
+            <Redirect to="/products" />
           </Switch>
         )}
       </div>
@@ -55,7 +57,8 @@ const mapState = state => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
-    isLoggedIn: !!state.auth.id
+    isLoggedIn: !!state.auth.id,
+    isAdmin: state.auth.isAdmin
   }
 }
 

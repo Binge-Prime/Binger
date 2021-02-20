@@ -3,26 +3,24 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
 
-const Navbar = ({handleClick, isLoggedIn, userId}) => (
+const Navbar = ({handleClick, isLoggedIn, userId, isAdmin}) => (
   <div>
     <h1>Binger</h1>
     <nav>
       {isLoggedIn ? (
         <div>
-          {/* The navbar will show these links for logged in users */}
-          <Link to='/home'>Home</Link>
           <Link to='/products'>Products</Link>
           <Link to='/cart'>Cart</Link>
-          <Link to={`/account/${ userId }`}>Account</Link>
-          {/* admin tools link should only to become visible if logged in with admin rights */}
-          <Link to='/admin'>Admin Tools</Link>
+          <Link to={`/account/${userId}`}>Account</Link>
+          { isAdmin ?
+            <Link to='/admin'>Admin Tools</Link>
+          : null }
           <a href="#" onClick={handleClick}>
             Logout
           </a>
         </div>
       ) : (
         <div>
-          {/* The navbar will show these links before users log in */}
           <Link to='/login'>Login</Link>
           <Link to='/signup'>Sign Up</Link>
           <Link to='/products'>Products</Link>
@@ -39,7 +37,8 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
 const mapState = state => {
   return {
     isLoggedIn: !!state.auth.id,
-    userId: state.auth.id
+    userId: state.auth.id,
+    isAdmin: state.auth.isAdmin
   }
 }
 

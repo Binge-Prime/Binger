@@ -7,7 +7,6 @@ import { fetchCart, deleteOrder, emptyCart } from '../store/cart'
 class Cart extends Component {
     componentDidMount () {
         this.props.init(this.props.userId); 
-
         this.handleChange = this.handleChange.bind(this);
         this.handleDestroy = this.handleDestroy.bind(this);
         this.handlePurchase = this.handlePurchase.bind(this);       
@@ -31,7 +30,7 @@ class Cart extends Component {
     render () {
         const { orders } = this.props;
 
-        if (!orders) {
+        if (!orders || orders.length === 0) {
             return (
                 <div>
                     <h1> Your cart is empty! Go check out our awesome products under the 'Products' tab :)</h1>
@@ -66,7 +65,7 @@ class Cart extends Component {
                         })}
                     </tbody>
                 </table>
-                <button onClick={()=>this.handlePurchase(this.props.userId)}type='button' >Purchase</button>
+                    <button onClick={() => this.handlePurchase(this.props.userId)} type='button' >Purchase</button>
             </div>
         )
  

@@ -15,9 +15,10 @@ class AllProducts extends Component {
         this.props.removeProduct(e.target.value);
     }
     render () {
-        const { products, isLoggedIn, userId, addToCart } = this.props;
+        const { products, isLoggedIn, userId, addToCart, name } = this.props;
         return (
             <div>
+                <h3>Welcome, { name }</h3>
                 <ul id='all-products-list'>
                     { products.map((product) => {
                         return (
@@ -51,7 +52,8 @@ const mapStateToProps = (state) => {
     return {
         products: state.products.products,
         isLoggedIn: !!state.auth.id,
-        userId: state.auth.id
+        userId: state.auth.id,
+        name: state.auth.firstName
     };
 };
 

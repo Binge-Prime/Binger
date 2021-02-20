@@ -42,6 +42,8 @@ form div {
 #all-products-list li {
   list-style-type: none;
 }
+
+
 #product-tile-body {
   display: flex;
   flex-direction: column;
