@@ -1,7 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Component } from 'react';
-import { fetchCart, deleteOrder, emptyCart } from '../store/cart'
+import { fetchCart, deleteOrder, emptyCart, openCart, updateQuantity } from '../store/cart'
+
+// Constant
+const emptyMessage = (
+    <div>
+        <h1> Your cart is empty! Go check out our awesome products under the 'Products' tab :)</h1>
+    </div>
+)
 
 // Displays user's cart
 class Cart extends Component {
@@ -14,29 +21,31 @@ class Cart extends Component {
     }
 
     handleDestroy(orderId) {
-        this.props.deleteOrder(orderId);
-        this.props.history.go(0)           
+        this.props.deleteOrder(orderId);           
     }
 
     handlePurchase(id) {
         this.props.emptyCart(id);
-        this.props.history.go(0)
     }
 
-    handleChange(id, price, quantity) {
-        const orderPrice = document.getElementById(id);
-        orderPrice.innerHTML = `${ price * quantity }`
+    handleChange(productId, orderId, price) {
+        const quantity = document.getElementById('select-quantity');
+        const orderPrice = document.getElementById(productId)
+        this.props.updateQuantity(orderId, quantity.value)
+        orderPrice.innerHTML = `$${ price * quantity.value }`
     }
 
     render () {
-        const { orders } = this.props;
+        const { orders, isOpen, userId, openCart } = this.props;
 
-        if (!orders) {
-            return (
-                <div>
-                    <h1> Your cart is empty! Go check out our awesome products under the 'Products' tab :)</h1>
-                </div>
-            )
+        if (!isOpen) {
+            alert('Your order will arrive shortly. Thank you for shopping with Binger!')
+            openCart(userId)
+            return(emptyMessage)
+        }
+
+        if (orders.length === 0) {
+            return (emptyMessage)
         }
         
         return (
@@ -52,10 +61,10 @@ class Cart extends Component {
                                     <td>{ product.name }</td>
                                     <td id={ product.id }>{`$ ${ product.price }`}</td>
                                     <td>
-                                        <select onChange={() => this.handleChange(product.id, product.price, this.value)}>
+                                        <select id='select-quantity' onChange={() => this.handleChange(product.id, order.id, product.price)}>
                                             { options.map(( num ) => {
                                                 return (
-                                                    <option key={ 'option' + num }>{ num }</option>
+                                                    <option value={ num } key={ 'option' + num }>{ num }</option>
                                                 )
                                             })}
                                         </select>
@@ -76,7 +85,8 @@ class Cart extends Component {
 const mapStateToProps = (state) => {
     return {
         orders: state.cart.orders,
-        userId: state.auth.id
+        userId: state.auth.id,
+        isOpen: state.cart.isOpen
     }
 }
 
@@ -84,7 +94,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         init: (id) => dispatch(fetchCart(id)),
         deleteOrder: (id, productId) => dispatch(deleteOrder(id, productId)),
-        emptyCart: (id) => dispatch(emptyCart(id))
+        emptyCart: (id) => dispatch(emptyCart(id)),
+        updateQuantity: (id, quantity) => dispatch(updateQuantity(id, quantity)),
+        openCart: (id) => dispatch(openCart(id))
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);
