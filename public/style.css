@@ -75,6 +75,10 @@ form div {
   color: white;
 }
 
+#sold-out {
+  color: orangered
+}
+
 /* PRODUCT FORM */
 
 #productForm-shell {

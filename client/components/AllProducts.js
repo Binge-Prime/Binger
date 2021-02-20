@@ -28,11 +28,14 @@ class AllProducts extends Component {
                                     <ul id='product-tile-info'>
                                         <li>{ product.name }</li>
                                         <li>${ product.price }</li>
-                                        {/* <li> { product.avgRating } </li> */}
+                                        { product.quantity === 0 ? 
+                                        <li id='sold-out'>SOLD OUT</li> : 
+                                        null
+                                        }
                                     </ul>
                                 </li>
                                 </Link>
-                                { isLoggedIn ? (
+                                { isLoggedIn && product.quantity !== 0 ? (
                                     <div id='product-tile-buttons'>
                                         <button type='button' className='button-enter' onClick={() => addToCart(userId, product.id)} >Add to Cart</button>
                                     </div>
