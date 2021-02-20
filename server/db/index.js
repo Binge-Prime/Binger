@@ -7,12 +7,14 @@ const User = require('./models/user');
 const Order = require('./models/order');
 const Product = require('./models/product');
 const Reviews = require('./models/review');
-//associations could go here!
+const Cart = require('./models/cart')
+
 User.hasMany(Order)
 User.hasMany(Reviews)
 //---
-Order.belongsTo(User)
-Product.hasMany(Order)
+Cart.belongsTo(User)
+Cart.hasMany(Order)
+Order.belongsTo(Product)
 //---
 Reviews.belongsTo(Product)
 Product.hasMany(Reviews)
@@ -114,24 +116,23 @@ const syncAndSeed =  async()=> {
     })
   ])
 
-  //HARD CODED AN ORDER TIED TO OUR USER NAMED CODY
-    Order.create({
-      userId: 1,
-      isOpen: true,
-      products: [
-        {
-        name: 'Califia Farms - Almond Milk, Unsweetened, 48oz,', 
-        price: 4.39, 
-        ImgUrl: '/images/sze_almondmilk.jpg',
-        quantity: 1
-      }
-      ]
-    })
-    Order.create({
-      userId: 2,
-      isOpen: true,
-      products: []
-    })
+await Cart.create({
+    isOpen: true,
+    isComplete: false,
+    userId: 1
+  })
+  
+const orders = await Promise.all([
+  Order.create({
+    productId: 1,
+    cartId: 1
+    }),
+  Order.create({
+    productId: 3,
+    cartId: 1
+  })
+])
+    
 
 
   const [cody, murphy] = users;
@@ -165,6 +166,7 @@ module.exports = {
   models: {
     User,
     Product,
-    Order
+    Order,
+    Cart
   }
 }
