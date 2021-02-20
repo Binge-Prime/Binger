@@ -11,7 +11,6 @@ const AdminTools = ({ isLoggedIn }) => (
                     <Link to='/admin-products'>Edit Products</Link>
                     <Link to='/products/create'>Create Product</Link>
                     <Link to='/admin-users'>Edit Users</Link>
-                    <Link to='/users/create'>Create User</Link>
                 </div>
             ) : (
                 <p>Access Not Authorized</p>)

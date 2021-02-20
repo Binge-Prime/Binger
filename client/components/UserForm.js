@@ -6,10 +6,10 @@ export class UserForm extends React.Component {
 	constructor({ user }) {
 		super();
 		this.state = {
-			email: user.email,
-			firstName: user.firstName,
-			lastName: user.lastName,
-			address: user.address
+			email: user.id ? user.email : '' ,
+			firstName: user.id ? user.firstName : '' ,
+			lastName: user.id ? user.lastName : '' ,
+			address: user.id ? user.address : ''
 		}
 		this.onChange = this.onChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
