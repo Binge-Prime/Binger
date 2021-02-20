@@ -114,7 +114,7 @@ export default function productReducer (state=initialState, action) {
         case ADD_TO_ORDERS:
             return { ...state, order: action.order }
         case DELETE_ORDER:   
-        return {...state, order: action.orderToDelete } 
+            return {...state, order: action.orderToDelete } 
         case EMPTY_CART:
             return state 
         default:

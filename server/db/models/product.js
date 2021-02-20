@@ -17,11 +17,11 @@ const Product = db.define('product', {
     defaultValue : 1
   },
   price: {
-    // prints out price in money format ex: user inputs 15.2  outputs 15.20
     type: Sequelize.DECIMAL(10, 2)  
   },
   description: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    defaultValue: ''
   },
   ImgUrl: {
     type: Sequelize.STRING

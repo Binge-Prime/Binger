@@ -30,7 +30,7 @@ class Routes extends Component {
             <Route path='/product/:id' component={SingleProduct} />
             <Route path='/products/create' component={ProductForm} />
             <Route path='/products/update/:id' component={ProductForm} />
-            <Route path='/account' component={SingleUser} />
+            <Route path='/account/:id' component={SingleUser} />
             <Redirect to="/home" />
           </Switch>
         ) : (

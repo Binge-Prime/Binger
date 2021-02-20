@@ -22,8 +22,9 @@ Product.hasMany(Reviews)
 const syncAndSeed =  async()=> {
   await db.sync({force: true})
   const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({ email: 'murphy@email.com', password: '123' })
+    User.create({email: 'cody@email.com', password: '123', firstName: 'Cody', lastName: 'James', address: '1 Tesla Dr, Austin, TX'}),
+    User.create({ email: 'murphy@email.com', password: '123', firstName: 'Murphy', lastName: 'Smith', address: '1 Roku St, Devner, CO'}),
+    User.create({ email: 'admin@email.com', password: 'admin', isAdmin: true, firstName: 'Admin', lastName: 'Account', address: ''})
   ])
   
   const products = await Promise.all([
@@ -134,13 +135,14 @@ const syncAndSeed =  async()=> {
     })
 
 
-  const [cody, murphy] = users;
+  const [cody, murphy, admin] = users;
   const [strawberry, blueberry, banana, cucumber, avacado, onion, mexicanCheese, egg, cream, stringCheese, almondMilk, milk] = products;
 
   return {
     users: {
       cody,
-      murphy
+      murphy,
+      admin
     },
     products: {
       strawberry, 

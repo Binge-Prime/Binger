@@ -33,7 +33,6 @@ class Cart extends Component {
            
             const orderPrice = document.getElementById(id);
             orderPrice.innerHTML = `$ ${price}`;
-           
         }
         async increment(price, id){
             // const User = (await axios.get(`/api/cart/${userId}`)).data
@@ -51,6 +50,7 @@ class Cart extends Component {
         // Fetch product data
         
         const orderItems = await this.props.orderItems(this.props.auth.id); 
+        console.log(this.props);
         
     }
     render () {
