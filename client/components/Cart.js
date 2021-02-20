@@ -24,7 +24,8 @@ class Cart extends Component {
 
     handleChange(id, price, quantity) {
         const orderPrice = document.getElementById(id);
-        orderPrice.innerHTML = `${ price * quantity }`
+        console.log(quantity, price);
+        orderPrice.innerHTML = `$${ price }`
     }
 
     render () {
@@ -48,11 +49,13 @@ class Cart extends Component {
                             return (
                                 <tr key={ 'product' + product.id }>
                                     <td><img className='thumbnail' src={ product.ImgUrl }/></td>
-                                    <td>{ product.name }</td>
-                                    <td id={ product.id }>{`$ ${ product.price }`}</td>
+                                    <td>{product.name}</td>
+                                    <td>   </td>
+                                    <td id={product.id}>{`$${product.price}`}</td>
+                                    <td>   </td>
                                     <td>
                                         <select onChange={() => this.handleChange(product.id, product.price, this.value)}>
-                                            { options.map(( num ) => {
+                                            {options.map((num) => {
                                                 return (
                                                     <option key={ 'option' + num }>{ num }</option>
                                                 )

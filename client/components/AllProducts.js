@@ -18,7 +18,7 @@ class AllProducts extends Component {
         const { products, isLoggedIn, userId, addToCart, name } = this.props;
         return (
             <div>
-                <h3>Welcome, { name }</h3>
+                <h3>Welcome, { userId? name : `Guest`}</h3>
                 <ul id='all-products-list'>
                     { products.map((product) => {
                         return (

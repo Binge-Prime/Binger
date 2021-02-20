@@ -85,9 +85,6 @@ class AdminUsers extends Component {
                                             <button type='button' className='button-action'>View</button>
                                         </Link>
                                         <button type='button' className='button-delete' value={user.id} onClick={(e) => this.handleDestroy(e)}>Delete</button>
-                                        <Link to={`/users/update/${user.id}/orderhistory`}>
-                                            <button type='button' className='button-action'>View Order History</button>
-                                        </Link>
                                     </td>
                                 </tr>
                             )

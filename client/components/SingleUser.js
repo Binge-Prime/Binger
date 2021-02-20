@@ -26,7 +26,7 @@ export class SingleUser extends React.Component {
 				<h2>Welcome back, { user.firstName }</h2>
 				<div id='user-info'>
 					<img id='user-photo' src={ user.photo } />
-					<div>customer since | -- sign up date -- |</div>
+					<div>customer since February 2021</div>
 					<div id='user-email'>{ user.email }</div>
 					<div id='user-address'>{ user.address }</div>
 				</div>
