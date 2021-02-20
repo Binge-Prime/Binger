@@ -43,14 +43,14 @@ class ProductForm extends Component {
         const { name, category, price, description, ImgUrl } = this.state;
         const { product } = this.props;
         return (
-            <div id='productForm-shell'>
+            <div id='update-form-shell'>
                 <h2>
                     { product.id ?
                         `Edit ${product.name}` : 'Add New Product'
                     }
                 </h2>
                 
-                <form id='productForm-body' onSubmit={(e) => this.handleSubmit(e)}>
+                <form id='update-form-body' onSubmit={(e) => this.handleSubmit(e)}>
                     <label htmlFor='name'>Name: </label>
                     <input type='text' name='name' onChange={(e) => this.onChange(e)} value={name} />
                     
@@ -67,7 +67,6 @@ class ProductForm extends Component {
                     <input type='text' name='ImgUrl' onChange={(e) => this.onChange(e)} value={ImgUrl} />
 
                     <div id='productForm-buttons'>
-                        {/* <input type='reset'></input> // Q: Do we want to add a reset button that returns the form to prevProps? Alternatively, we can render 2 forms, one with current data (not editable), and one with new data */}
                         <button type='submit' className='button-submit'>{ product.id ? 'Update ' : 'Create ' }</button>
 
                         { !!product.id &&

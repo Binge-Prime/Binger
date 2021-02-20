@@ -12,7 +12,6 @@ export class SingleUser extends React.Component {
 	}
 	componentDidMount() {
 		this.props.init(this.props.match.params.id);
-		console.log(this.props);
 	}
 	toggleViewOrders() {
 		this.setState({
@@ -22,12 +21,11 @@ export class SingleUser extends React.Component {
 	render() {
 		const { user } = this.props;
 		const { viewUserOrders } = this.state;
-		console.log(user);
 		return (
 			<div>
 				<h1>Welcome back, { user.firstName }</h1>
 				<div id='user-info'>
-					<img id='usr-photo' src={ user.photo } />
+					<img id='user-photo' src={ user.photo } />
 					<div>customer since | -- sign up date -- |</div>
 					<div id='user-email'>{ user.email }</div>
 					<div id='user-address'>{ user.address }</div>
@@ -35,6 +33,9 @@ export class SingleUser extends React.Component {
 				<div id='user-buttons'>
 					<Link to={`/users/update/${ user.id }`}>
 						<button type='button' className='button-action'>Update Account Info</button>
+					</Link>
+					<Link to={`/users/auth/${ user.id }`}>
+						<button type='button' className='button-action'>Change Password</button>
 					</Link>
 					<button type='button' className='button-action' onClick={() => this.toggleViewOrders()}>Show Order History</button>
 				</div>
@@ -49,7 +50,6 @@ export class SingleUser extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		user: state.users.selectedUser,
-		products: state.products.products
 	};
 };
 
