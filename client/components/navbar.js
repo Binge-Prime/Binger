@@ -8,7 +8,7 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
     <h1>Binger</h1>
     <nav>
       {isLoggedIn ? (
-        <div>
+        <div >
           {/* The navbar will show these links for logged in users */}
           <Link to='/home'>Home</Link>
           <Link to='/products'>Products</Link>

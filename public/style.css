@@ -2,10 +2,23 @@
 
 body {
   font-family: sans-serif;
+  background-color: cornsilk;
 }
 a {
   text-decoration: none;
 }
+h1 {
+  text-align: center;
+  
+}
+h2{
+    text-align: center;
+  }
+
+h3 {
+  text-align: center;
+}
+
 hr {
   border: 0;
   clear:both;
@@ -14,12 +27,35 @@ hr {
   background-color: black;
   height: 1px;
 }
+#update-form-shell label {
+  margin-top: center;
+}
+#update-form-shell{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#update-form-body{
+  text-align: center;
+}
+#user-info {
+  text-align: center;
+  padding-bottom: 2rem;
+}
+#user-buttons{
+  text-align: center;
+  padding: 1rem;
+}
 label {
   display: block;
 }
 nav a {
   display: inline-block;
   margin: 1em;
+  color: blue;
+}
+nav {
+  padding-left: 28rem ;
 }
 form div {
   margin: 1em;
@@ -30,17 +66,31 @@ form div {
   padding: 5px;
   width: 200px;
   margin-bottom: 1em;
+  
 }
+#admin-models-top-select{
+ display: flex;
+ justify-content: space-between;
+ width: 30%;
+ padding-left: 30rem;
+ margin: 1rem;
+}
+/* .button-delete{
+  margin: 1 rem
+} */
 
 /* ALL PRODUCTS PAGE */
 
 #all-products-list {
   display: flex;
   margin: 0;
-  padding: 0;
+  padding-left: 18rem;
+  flex-wrap: wrap;
 }
 #all-products-list li {
   list-style-type: none;
+  color: blue;
+
 }
 #product-tile-body {
   display: flex;
@@ -118,3 +168,12 @@ form div {
   text-align: center;
 }
 
+#single-product .thumbnail {
+  height: 400px;
+  width: 400px;
+}
+
+#single-product {
+  display: flex;
+  align-items: center;
+}
