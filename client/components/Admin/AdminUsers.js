@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchUsers, deleteUsers } from '../../store/users'
+import { fetchUsers, deleteUser } from '../../store/users'
 
 
 class AdminUsers extends Component {
-    componentDidMount () {
+    componentDidMount() {
         this.props.init();
         this.handleDestroy = this.handleDestroy.bind(this);
     }
@@ -28,6 +28,7 @@ class AdminUsers extends Component {
                         </tr>
                     </thead>
                     <tbody>
+
                         { users.map((user) => {
                             return (
                                 <tr key={ user.id } id='admin-users-row'>

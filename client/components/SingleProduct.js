@@ -30,8 +30,7 @@ class SingleProduct extends Component {
                     <li> {product.name} </li>
                     <li> {product.price} </li>
                     <li> {product.category} </li>
-                    {/* console.log to be replaced with cart thunk */}
-                   <button onClick = { () => addToCart(userId, this.props.product.id)} >  add to Cart</button>
+                   <button onClick = { () => addToCart(userId, this.props.product.id)} >  Add to Cart</button>
                 </ul>
             </div>
         )
