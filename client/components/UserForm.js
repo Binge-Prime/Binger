@@ -40,7 +40,7 @@ export class UserForm extends React.Component {
 			<div id = 'update-form-shell' >
 				<h2>Update My Profile</h2>
 				<form id='update-form-body' onSubmit={(e) => this.handleSubmit(e)}>
-					
+					<div>
 					<label htmlFor="email">Email</label>
 					<input
 						name="email"
@@ -72,7 +72,7 @@ export class UserForm extends React.Component {
 						value={address}
 						onChange={(e) => this.onChange(e)}
 					/>
-
+					</div>
 					<div id='user-form-buttons'>
 						<button
 							type='submit'

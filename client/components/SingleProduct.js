@@ -27,7 +27,7 @@ class SingleProduct extends Component {
             <div>
                 <ul id='single-product'>
                 {/* window.location.origin covers the edge case of image pathing breaking for certain images */}
-                <img className ='thumbnail' src={ `${ window.location.origin }/${ product.ImgUrl }` }/>
+                <img className ='thumbnail' src={ `${ window.location.origin }/${ product.ImgUrl }` }/>  
                     <li> {product.name} </li>
                     <li> {product.price} </li>
                     <li> {product.category} </li>
