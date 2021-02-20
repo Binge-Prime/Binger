@@ -23,7 +23,7 @@ export class SingleUser extends React.Component {
 		const { viewUserOrders } = this.state;
 		return (
 			<div>
-				<h1>Welcome back, { user.firstName }</h1>
+				<h2>Welcome back, { user.firstName }</h2>
 				<div id='user-info'>
 					<img id='user-photo' src={ user.photo } />
 					<div>customer since | -- sign up date -- |</div>
@@ -34,10 +34,7 @@ export class SingleUser extends React.Component {
 					<Link to={`/users/update/${ user.id }`}>
 						<button type='button' className='button-action'>Update Account Info</button>
 					</Link>
-					<Link to={`/users/auth/${ user.id }`}>
-						<button type='button' className='button-action'>Change Password</button>
-					</Link>
-					<button type='button' className='button-action' onClick={() => this.toggleViewOrders()}>Show Order History</button>
+
 				</div>
 				{ viewUserOrders && 
 					<p>user.orders.map(order)</p>
