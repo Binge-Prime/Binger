@@ -17,34 +17,37 @@ class AllProducts extends Component {
     render () {
         const { products, isLoggedIn, userId, addToCart } = this.props;
         return (
-            <div>
-                <ul id='all-products-list'>
-                    { products.map((product) => {
-                        return (
-                            <div key={ product.id }id='product-tile-body'>
-                                <Link to={`/product/${product.id}`}>
-                                <li>
-                                    <img className='thumbnail' src={product.ImgUrl}/>
-                                    <ul id='product-tile-info'>
-                                        <li>{ product.name }</li>
-                                        <li>${ product.price }</li>
-                                        { product.quantity === 0 ? 
-                                        <li id='sold-out'>SOLD OUT</li> : 
-                                        null
-                                        }
-                                    </ul>
-                                </li>
-                                </Link>
+            <div className='container'>
+                <div className='row'>
+                { products.map((product) => {
+                    return (
+                        <div key={ product.id } className='col' id='all-products-card-col'>
+                            <div id='all-products-card' className='card text-center text-white bg-dark mb-3' style={{ width: 275 + 'px' }}>
+                                <img src={product.ImgUrl} className='card-image-top bg-white'/>
+                                <div id='all-products-card-product-name' className='card-body'>
+                                    <h3 className='card-text'>{ product.name }</h3>
+                                </div>
+                                <hr></hr>
+                                <div className='card-body'>
+                                    <h5 className='card-text'>${ product.price }</h5>
+                                    { product.quantity === 0 ? 
+                                    <h2 id='sold-out' className='card-text text-danger'>SOLD OUT</h2> : 
+                                    null
+                                    }
+                                </div>
+                                { isLoggedIn && product.quantity !== 0 ? <hr></hr> : null }
                                 { isLoggedIn && product.quantity !== 0 ? (
-                                    <div id='product-tile-buttons'>
-                                        <button type='button' className='button-enter' onClick={() => addToCart(userId, product.id)} >Add to Cart</button>
+                                    <div className='card-body' id='all-products-card-button-body'>
+                                        <button type='button' className='btn btn-primary' onClick={() => addToCart(userId, product.id)} >Add to Cart</button>
+                                        <Link to={`/product/${product.id}`} className='card-link'> View Product </Link>
                                     </div>
                                 ) : (<br/>)
                                 }
                             </div>
-                        )
-                    })}
-                </ul>
+                        </div>
+                    )
+                })}
+                </div>
             </div>
         )
     }

@@ -8,8 +8,8 @@ export const Home = props => {
   const { name } = props
 
   return (
-    <div>
-      <h3>Welcome, { name }</h3>
+    <div className='text-center'>
+      <h3 className='display-1'>Welcome, { name }</h3>
     </div>
   )
 }
@@ -19,7 +19,7 @@ export const Home = props => {
  */
 const mapState = state => {
   return {
-    name: state.auth.name ? state.auth.name : 'Guest User'
+    name: state.auth.firstName !== null ? state.auth.firstName : 'Guest User'
   }
 }
 

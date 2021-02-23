@@ -24,21 +24,34 @@ class SingleProduct extends Component {
         }
         
         return (
-            <div>
-                <ul id='single-product'>
-                {/* window.location.origin covers the edge case of image pathing breaking for certain images */}
-                <img className ='thumbnail' src={ `${ window.location.origin }/${ product.ImgUrl }` }/> 
-                    <li> {product.name} </li>
-                    <li> {product.price} </li>
-                    <li> {product.category} </li>                   
-                    { product.quantity === 0 ?
-                    <li id='sold-out'>SOLD OUT</li> :
-                    <div>
-                        <li> In Stock: { product.quantity }</li>
-                        <button onClick = { () => addToCart(userId, this.props.product.id)}>Add to Cart</button>
+            <div className='container justify-content-center'>
+                <div className='row justify-content-center'>
+                    <div id='all-products-card' className='card text-center justify-content-center text-white bg-dark mb-3' style={{ width: 275 + 'px' }}>
+                        {/* window.location.origin covers the edge case of image pathing breaking for certain images */}
+                        <img className='card-image-top bg-white' src={ `${ window.location.origin }/${ product.ImgUrl }` }/> 
+                        <div id='all-products-card-product-name' className='card-body'> 
+                            <h3 className='card-text'>{product.name}</h3>
+                        </div>
+                        <hr></hr>
+                        <div className='card-body'>
+                            <h5 className='card-text'>{'$' + product.price}</h5>
+                        </div>
+                        <hr></hr>
+                        <div className='card-body'>
+                            <h5 className='card-text'>{product.category}</h5>
+                        </div>     
+                        <hr></hr>            
+                        { product.quantity === 0 ?
+                        <div className='card-body'>
+                            <h3 className='card-text text-danger'>SOLD OUT</h3>
+                        </div> :
+                        <div className='card-body'>
+                            <h5 className='card-text'> In Stock: { product.quantity }</h5>
+                            <button className='btn btn-primary' onClick = { () => addToCart(userId, this.props.product.id)}>Add to Cart</button>
+                        </div>
+                        }
                     </div>
-                    }
-                </ul>
+                </div>
             </div>
         )
     }

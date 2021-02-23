@@ -37,46 +37,53 @@ export class UserForm extends React.Component {
 	render() {
 		const { email, firstName, lastName, address } = this.state;
 		return (
-			<div id = 'update-form-shell' >
-				<h2>Update My Profile</h2>
+			<div id='user-form' className='container justify-content-center'>
+				<h2 className='display-1 text-dark text-center'>Update My Profile</h2>
 				<form id='update-form-body' onSubmit={(e) => this.handleSubmit(e)}>
-					<div>
-					<label htmlFor="email">Email</label>
-					<input
-						name="email"
-						type="email"
-						value={email}
-						onChange={(e) => this.onChange(e)}
-					/>
-					
-					<label htmlFor="firstName">First Name</label>
-					<input
-						name="firstName"
-						type="text"
-						value={firstName}
-						onChange={(e) => this.onChange(e)}
-					/>
-
-					<label htmlFor="lastName">Last Name</label>
-					<input
-						name="lastName"
-						type="text"
-						value={lastName}
-						onChange={(e) => this.onChange(e)}
-					/>
-
-					<label htmlFor="address">Address</label>
-					<input
-						name="address"
-						type="text"
-						value={address}
-						onChange={(e) => this.onChange(e)}
-					/>
+					<div className='form-group'>
+						<label htmlFor="email">Email</label>
+						<input
+							className='form-control'
+							name="email"
+							type="email"
+							value={email}
+							onChange={(e) => this.onChange(e)}
+						/>
+					</div>
+					<div className='form-group'>
+						<label htmlFor="firstName">First Name</label>
+						<input
+							className='form-control'
+							name="firstName"
+							type="text"
+							value={firstName}
+							onChange={(e) => this.onChange(e)}
+						/>
+					</div>
+					<div className='form-group'>
+						<label htmlFor="lastName">Last Name</label>
+						<input
+							className='form-control'
+							name="lastName"
+							type="text"
+							value={lastName}
+							onChange={(e) => this.onChange(e)}
+						/>
+					</div>
+					<div className='form-group'>
+						<label htmlFor="address">Address</label>
+						<input
+							className='form-control'
+							name="address"
+							type="text"
+							value={address}
+							onChange={(e) => this.onChange(e)}
+						/>
 					</div>
 					<div id='user-form-buttons'>
 						<button
 							type='submit'
-							className='button-action'
+							className='btn btn-primary'
 						>
 							Submit Update </button>
 						{/* destroy account button ? */}

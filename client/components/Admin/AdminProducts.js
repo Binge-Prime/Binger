@@ -58,50 +58,53 @@ class AdminProducts extends Component {
     render () {
         const { products } = this.props;
         return (
-            <div>
-                <div id='admin-models-top'>
-                    <div id='admin-models-top-select'>
-                        Selected Products: {this.state.selectedProducts.length}
-                        <button type='button' className='button-delete' onClick={() => this.handleBulkDestroy()}>Delete Selected</button>
-                        <button type='button' className='button-action' onClick={() => this.handleClearSelection()}>Clear Selection</button>
+            <div className='container justify-content-center'>
+                <div className='row justify-content-around' id='admin-models-top-select'>
+                    <h4>Selected Products: {this.state.selectedProducts.length}</h4>
+                    <button type='button' className='btn btn-warning' onClick={() => this.handleClearSelection()}>Clear Selection</button>
+                    <button type='button' className='btn btn-danger' onClick={() => this.handleBulkDestroy()}>Delete Selected</button>
+                </div>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <table className='table table-dark table-image'>
+                                <thead className='thead-light'>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>Product Name</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Available Qty</th>
+                                        <th>Reorder Qty</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    { products.map((product) => {
+                                        return (
+                                            <tr key={ product.id } id='admin-models-row'>
+                                                    <td><input type="checkbox" className='on-off-btn' value={product.id} onChange={(e) => this.updateSelection(e)}></input></td>
+                                                <td><Link to={`/product/${product.id}`}>{product.name}</Link></td>
+                                                <td>{ product.category }</td>
+                                                <td>{ product.price }</td>
+                                                <td>{product.quantity}</td>
+                                                <td><input type='number' id={`reorderQtyforProd${product.id}`} min='0'/></td>
+                                                <td id='admin-models-buttons' className='container justify-content-center'>                                       
+                                                    <Link to={`/products/update/${product.id}`}>
+                                                        <button type='button' className='btn btn-warning'>Edit</button>
+                                                    </Link>
+                                                    <button type='button' className='btn btn-danger' value={product.id} onClick={(e) => this.handleDestroy(e)}>Delete</button>
+                                                    <button type='button' className='btn btn-success' value={product.id} onClick={(e) => this.submitReorder(e)}>Reorder</button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-
-                <table id='admin-models-table'>
-                    <thead>
-                        <tr>
-                            <th>Select</th>
-                            <th>Product Name</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Available Qty</th>
-                            <th>Reorder Qty</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        { products.map((product) => {
-                            return (
-                                <tr key={ product.id } id='admin-models-row'>
-                                    <td><input type="checkbox" value={product.id} onChange={(e) => this.updateSelection(e)}></input></td>
-                                    <td><Link to={`/product/${product.id}`}>{product.name}</Link></td>
-                                    <td>{ product.category }</td>
-                                    <td>{ product.price }</td>
-                                    <td>{product.quantity}</td>
-                                    <td><input type='number' id={`reorderQtyforProd${product.id}`} min='0'/></td>
-                                    <td id='admin-models-buttons'>                                       
-                                        <Link to={`/products/update/${product.id}`}>
-                                            <button type='button' className='button-action'>Edit</button>
-                                        </Link>
-                                        <button type='button' className='button-delete' value={product.id} onClick={(e) => this.handleDestroy(e)}>Delete</button>
-                                        <button type='button' className='button-action' value={product.id} onClick={(e) => this.submitReorder(e)}>Reorder</button>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
             </div>
         )
     }

@@ -15,7 +15,7 @@ class Routes extends Component {
   render() {
     const { isLoggedIn } = this.props
     return (
-      <div>
+      <div className='bg-secondary'>
         {isLoggedIn ? (
           <Switch>
             <Route path='/home' component={Home} />
@@ -32,7 +32,7 @@ class Routes extends Component {
             <Route path='/admin-users' component={AdminUsers} />
             <Route path='/users/create' component={UserForm} />
 
-            {/* <Redirect to="/home" /> */}
+            <Redirect to="/home" />
           </Switch>
         ) : (
           <Switch>
