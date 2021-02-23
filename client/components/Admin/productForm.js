@@ -43,34 +43,44 @@ class ProductForm extends Component {
         const { name, category, price, description, ImgUrl } = this.state;
         const { product } = this.props;
         return (
-            <div id='update-form-shell'>
-                <h2>
+            <div id='update-form-shell' className='container justify-content-center'>
+                <h3 className='display-1 text-dark text-center'>
                     { product.id ?
                         `Edit ${product.name}` : 'Add New Product'
                     }
-                </h2>
+                </h3>
                 
                 <form id='update-form-body' onSubmit={(e) => this.handleSubmit(e)}>
-                    <label htmlFor='name'>Name: </label>
-                    <input type='text' name='name' onChange={(e) => this.onChange(e)} value={name} />
-                    
-                    <label htmlFor='category'>Category: </label>
-                    <input type='text' name='category' onChange={(e) => this.onChange(e)} value={category} />
+                    <div className='form-group'>
+                        <label htmlFor='name'>Name: </label>
+                        <input type='text' name='name' className='form-control' onChange={(e) => this.onChange(e)} value={name} />
+                    </div>
 
-                    <label htmlFor='price'>Price: </label>
-                    <input type='number' name='price' onChange={(e) => this.onChange(e)} value={price} />
+                    <div className='form-group'>    
+                        <label htmlFor='category'>Category: </label>
+                        <input type='text' name='category' className='form-control' onChange={(e) => this.onChange(e)} value={category} />
+                    </div>
 
-                    <label htmlFor='description'>Decription: </label>
-                    <textarea className='input-description' name='description' onChange={(e) => this.onChange(e)} value={description} />
+                    <div className='form-group'>
+                        <label htmlFor='price'>Price: </label>
+                        <input type='number' name='price' className='form-control' onChange={(e) => this.onChange(e)} value={price} />
+                    </div>
 
-                    <label htmlFor='ImgUrl'>Image URL: </label>
-                    <input type='text' name='ImgUrl' onChange={(e) => this.onChange(e)} value={ImgUrl} />
+                    <div className='form-group'>
+                        <label htmlFor='description'>Decription: </label>
+                        <textarea className='input-description' name='description' className='form-control' onChange={(e) => this.onChange(e)} value={description} />
+                    </div>
 
-                    <div id='productForm-buttons'>
-                        <button type='submit' className='button-submit'>{ product.id ? 'Update ' : 'Create ' }</button>
+                    <div className='form-group'>
+                        <label htmlFor='ImgUrl'>Image URL: </label>
+                        <input type='text' name='ImgUrl' className='form-control' onChange={(e) => this.onChange(e)} value={ImgUrl} />
+                    </div>
+
+                    <div id='productForm-buttons' className='row justify-content-center'>
+                        <button type='submit' className='btn btn-primary'>{ product.id ? 'Update ' : 'Create ' }</button>
 
                         { !!product.id &&
-                            <button type='button' className='button-delete' onClick={() => this.handleDestroy()}>{`Delete`}</button>
+                            <button type='button' className='btn btn-danger' onClick={() => this.handleDestroy()}>{`Delete`}</button>
                         }
                     </div>
                 </form>

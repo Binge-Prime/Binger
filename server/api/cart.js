@@ -5,16 +5,25 @@ module.exports = router
 
 router.get('/:id', async (req, res, next) => {
     try {
-      const cart = await Cart.findOne({
+      let cart = await Cart.findOne({
           where:{
               userId:req.params.id,
-              isOpen:true
           },
           include: [{
             model: Order,
             include: [ Product ]
           }]
-      })
+        })
+
+      if(!cart){
+        cart = await Cart.create({
+            userId: req.params.id,
+            isOpen: true
+          })
+      } else if (!cart.isOpen) {
+        cart = await cart.update({ isOpen: true })
+      }
+
       res.send(cart)
     } catch (err) {
       next(err)
@@ -30,7 +39,7 @@ router.post('/:id', async (req, res, next) => {
     })
 
     if(!cart){
-      cart = await Cart.create({
+      await Cart.create({
           userId: req.params.id,
           isOpen: true
       })
@@ -38,20 +47,41 @@ router.post('/:id', async (req, res, next) => {
       await cart.update({ isOpen: true })
     }
 
-    let newOrder = await Order.create({
-      productId: req.body.productId,
-      cartId: cart.id,
-      userId: cart.userId
-    })
-
-    const order = await Order.findOne({
-      where: {
-        id: newOrder.id
+    cart = await Cart.findOne({
+      where:{
+          userId:req.params.id
       },
-      include: [ Product ]
+      include: [ Order ]
     })
 
-    res.send(order).status(201);
+    const duplicateOrder = await Order.findOne({
+      where: {
+        productId: req.body.productId
+      }
+    })
+
+    if (duplicateOrder) {
+      await Order.increment({ quantity: 1 }, { where: { id: duplicateOrder.id } })
+      await duplicateOrder.save()
+    } else {
+      await Order.create({
+        productId: req.body.productId,
+        cartId: cart.id,
+        userId: cart.userId
+      })
+    }
+
+    cart = await Cart.findOne({
+      where:{
+          userId:req.params.id
+      },
+      include: [{
+        model: Order,
+        include: [ Product ]
+      }]
+    })
+
+    res.send(cart).status(201);
   } catch (err) {
     next(err)
   }

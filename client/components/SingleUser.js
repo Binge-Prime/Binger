@@ -22,8 +22,8 @@ export class SingleUser extends React.Component {
 		const { user } = this.props;
 		const { viewUserOrders } = this.state;
 		return (
-			<div>
-				<h2>Welcome back, { user.firstName }</h2>
+			<div className='text-center'>
+				<h2 className='text-dark display-1'>Welcome back, { user.firstName }</h2>
 				<div id='user-info'>
 					<img id='user-photo' src={ user.photo } />
 					<div>customer since | -- sign up date -- |</div>
@@ -32,7 +32,7 @@ export class SingleUser extends React.Component {
 				</div>
 				<div id='user-buttons'>
 					<Link to={`/users/update/${ user.id }`}>
-						<button type='button' className='button-action'>Update Account Info</button>
+						<button type='button' className='btn btn-primary'>Update Account Info</button>
 					</Link>
 
 				</div>

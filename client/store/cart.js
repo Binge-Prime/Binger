@@ -13,7 +13,7 @@ const OPEN_CART = 'OPEN_CART'
 
 // Action Creators
 export const _setCart = (orders, isOpen) => ({ type: SET_CART, orders, isOpen });
-export const _addToCart = (order) => ({ type: ADD_TO_CART, order});
+export const _addToCart = (orders) => ({ type: ADD_TO_CART, orders});
 export const _deleteOrder = (order) => ({ type: DELETE_ORDER, order})
 export const _emptyCart = (cart, isOpen) => ({ type: EMPTY_CART, cart, isOpen })
 export const _updateQuantity = (order) => ({ type: UPDATE_QUANTITY, order })
@@ -25,7 +25,7 @@ export const _openCart = (cart, isOpen) => ({ type: OPEN_CART, cart, isOpen })
 export const fetchCart = (userId) => {
     return async(dispatch) => {
         const cart = (await axios.get(`/api/cart/${userId}`)).data
-        dispatch(_setCart(cart.orders, true))
+        dispatch(_setCart(cart.orders, cart.isOpen))
     }
 }
 
@@ -33,8 +33,8 @@ export const fetchCart = (userId) => {
 export const addOrder = (userId, productId) => {
     return async(dispatch) => {
         //pass in productId so we can use it to find product in our backend/routes
-        const order = (await axios.post(`/api/cart/${userId}`, {productId})).data
-        dispatch(_addToCart(order))
+        const cart = (await axios.post(`/api/cart/${userId}`, {productId})).data
+        dispatch(_addToCart(cart.orders))
     }
 }
 
@@ -58,7 +58,7 @@ export const openCart = (userId) => {
 export const emptyCart = (userId) => {
     return async (dispatch) => {
         const cart = (await axios.put(`/api/cart/clear/${ userId }`)).data
-        dispatch(_emptyCart(cart, false))
+        dispatch(_emptyCart(cart, cart.isOpen))
     }
 }
 
@@ -76,7 +76,7 @@ export default function cartReducer (state=initialState, action) {
         case SET_CART:
             return { ...state, orders : action.orders, isOpen: action.isOpen }
         case ADD_TO_CART:
-            return { ...state, orders: [...state.orders, action.order] }
+            return { ...state, orders: action.orders }
         case DELETE_ORDER:   
         return { ...state, orders: state.orders.filter(order => order.id !== action.order.id) }
         case EMPTY_CART:

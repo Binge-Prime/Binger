@@ -51,49 +51,52 @@ class AdminUsers extends Component {
     render () {
         const { users } = this.props;
         return (
-            <div>
-                <div id='admin-models-top'>
-                    <div id='admin-models-top-select'>
-                        Selected Users: {this.state.selectedUsers.length}
-                        <button type='button' className='button-delete' onClick={() => this.handleBulkDestroy()}>Delete Selected</button>
-                        <button type='button' className='button-action' onClick={() => this.handleClearSelection()}>Clear Selection</button>
-                    </div>
+            <div className='container justify-content-center'>
+                <div className='row justify-content-around' id='admin-models-top-select'>   
+                        <h4>Selected Users: {this.state.selectedUsers.length}</h4>
+                        <button type='button' className='btn btn-danger' onClick={() => this.handleBulkDestroy()}>Delete Selected</button>
+                        <button type='button' className='btn btn-warning' onClick={() => this.handleClearSelection()}>Clear Selection</button>
                 </div>
 
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <table className='table table-dark table-image'>
+                                <thead className='thead-light'>
+                                    <tr>
+                                        <th>Select</th> 
+                                        <th>Email</th>
+                                        <th>Name</th>
+                                        <th>Last Name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
 
-                <table id='admin-models-table'>
-                    <thead>
-                        <tr>
-                            <th>Select</th> 
-                            <th>Email</th>
-                            <th>Name</th>
-                            <th>Last Name</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        { users.map((user) => {
-                            return (
-                                <tr key={ user.id } id='admin-models-row'>
-                                    <td><input type="checkbox" value={user.id} onChange={(e) => this.updateSelection(e)}></input></td>
-                                    <td>{ user.email }</td>
-                                    <td>{ user.name }</td>
-                                    <td>{ user.lastname }</td>
-                                    <td id='admin-models-buttons'>                                       
-                                        <Link to={`/account/${user.id}`}>
-                                            <button type='button' className='button-action'>View</button>
-                                        </Link>
-                                        <button type='button' className='button-delete' value={user.id} onClick={(e) => this.handleDestroy(e)}>Delete</button>
-                                        <Link to={`/users/update/${user.id}/orderhistory`}>
-                                            <button type='button' className='button-action'>View Order History</button>
-                                        </Link>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
+                                <tbody>
+                                    { users.map((user) => {
+                                        return (
+                                            <tr key={ user.id } id='admin-models-row'>
+                                                <td><input type="checkbox" value={user.id} onChange={(e) => this.updateSelection(e)}></input></td>
+                                                <td>{ user.email }</td>
+                                                <td>{ user.name }</td>
+                                                <td>{ user.lastname }</td>
+                                                <td id='admin-models-buttons' className='container justify-content-around'>                                       
+                                                    <Link to={`/account/${user.id}`}>
+                                                        <button type='button' className='btn btn-primary'>View</button>
+                                                    </Link>
+                                                    <button type='button' className='btn btn-danger' value={user.id} onClick={(e) => this.handleDestroy(e)}>Delete</button>
+                                                    <Link to={`/users/update/${user.id}/orderhistory`}>
+                                                        <button type='button' className='btn btn-success'>View Order History</button>
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }

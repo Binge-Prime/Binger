@@ -3,14 +3,13 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 const AdminTools = ({ isLoggedIn }) => (
-    <div>
-        <h2>Admin Tools</h2>
+    <div className='container justify-content-center align-items-center'>
         { isLoggedIn ? // needs to check for Admin role, nt just logged in user //
             (
-                <div id='adminLinks'>
-                    <Link to='/admin-products'>Edit Products</Link>
-                    <Link to='/products/create'>Create Product</Link>
-                    <Link to='/admin-users'>Edit Users</Link>
+                <div className="container justify-content-center btn-group" role="group" id='adminLinks'>
+                    <Link className='btn btn-primary' to='/admin-products'>Edit Products</Link>
+                    <Link className='btn btn-primary' to='/products/create'>Create Product</Link>
+                    <Link className='btn btn-primary' to='/admin-users'>Edit Users</Link>
                 </div>
             ) : (
                 <p>Access Not Authorized</p>)

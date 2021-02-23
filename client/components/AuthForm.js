@@ -9,41 +9,44 @@ const AuthForm = props => {
   const {name, displayName, handleSubmit, error} = props
 
   return (
-    <div>
+    <div className='container justify-content-center'>
+      <h2 className='display-1 text-dark text-center'>{ name === 'signup' ? 'Sign Up' : 'Log In'}</h2>
       <form onSubmit={handleSubmit} name={name}>
         {
             name === 'signup' ? 
-            <div>
+            <div className='form-group'>
               <label htmlFor="username">
                 <small>Name</small>
               </label>
-              <input name="username" type="username" />
+              <input name="username" type="username" className='form-control'/>
             </div>
             : null
         } 
-        <div>
+        <div className='form-group'>
           <label htmlFor="email">
             <small>Email</small>
           </label>
-          <input name="email" type="text" />
+          <input name="email" type="text" className='form-control'/>
         </div>
-        <div>
+        <div className='form-group'>
           <label htmlFor="password">
             <small>Password</small>
           </label>
-          <input name="password" type="password" />
+          <input name="password" type="password" className='form-control'/>
         </div>
         {
           name === 'signup' ? 
-          <div>
+          <div className='form-group'>
             <label htmlFor="githubId">
               <small>Github Username(optional)</small>
             </label>
-            <input name="githubId" type="githubId" />
+            <input name="githubId" type="githubId" className='form-control'/>
           </div>
           : null
         }
-          <button type="submit">{displayName}</button>
+        <div className='row justify-content-center'>
+          <button type="submit" className='btn btn-primary'>{displayName}</button>
+        </div>
         {error && error.response && <div> {error.response.data} </div>}
       </form>
       {
